@@ -1,0 +1,2 @@
+uid1 pwd1
+uid2 pwd2

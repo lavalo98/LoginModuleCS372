@@ -1,16 +1,32 @@
-var http = require('http');
-//var dt = require('./myFirstModule');
-var url = require('url');
-var fs = require('fs');
+const express = require('express');
+var bodyParser = require('body-parser')
+const app = express();
+  
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-http.createServer(function (req, res) {
-  fs.readFile('LoginPage.html', function(err, data) {
-    console.log("Received a connection. Serving Login Page...");
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(data);
-    console.log("Successfully served Login Page.");
-    return res.end();
-  });
+var hardUsername = "admin";
+var hardPassword = "password";
+    
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/LoginPage.html');
+});
+    
+app.post('/', urlencodedParser, (req, res) => {
 
-  //res.end();
-}).listen(80);
+  var usernameInput = req.body.username;
+  var passwordInput = req.body.password;
+
+  console.log('Username: ', usernameInput);
+  console.log('Password: ', passwordInput);
+
+  console.log('Username: ', hardUsername);
+  console.log('Password: ', hardPassword);
+    
+  if(usernameInput == hardUsername && passwordInput == hardPassword){
+    res.sendFile(__dirname + '/Success.html');
+  }else{
+    res.sendFile(__dirname + '/Failure.html');
+  }
+});
+    
+app.listen(80);

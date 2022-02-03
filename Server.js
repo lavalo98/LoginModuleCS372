@@ -1,20 +1,46 @@
-var http = require('http');
-//var dt = require('./myFirstModule');
-var url = require('url');
-var fs = require('fs');
+const fs = require('fs');
+const readline = require('readline');
+const express = require('express');
+var bodyParser = require('body-parser');
+const app = express();
 
-http.createServer(function (req, res) {
+const readInterface = readline.createInterface({
+  input: fs.createReadStream('Logins.txt'),
+  output: process.stdout,
+  console: false
+});
 
-  //console.log(req);
-  console.log(req.url);
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-  fs.readFile('LoginPage.html', function(err, data) {
-    console.log("Received a connection. Serving Login Page...");
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(data);
-    console.log("Successfully served Login Page.");
-    return res.end();
-  });
+var listOfUsernames = []; // Created a list of usernames
+var listOfPasswords = []; // Created a list of passwords
 
-  //res.end();
-}).listen(80);
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/LoginPage.html');
+});
+
+// Takes the Logins.txt file and puts the username and password into their respective arrays
+readInterface.on('line', function(line) {
+  var words = line.split(" ");
+  listOfUsernames.push(words[0]);
+  listOfPasswords.push(words[1]);
+});
+
+// Called when the Submit button is clicked
+app.post('/', urlencodedParser, (req, res) => {
+
+  var usernameInput = req.body.username; // User inputted username
+  var passwordInput = req.body.password; // User inputted password
+
+  for (let i = 0; i < listOfUsernames.length; i++) {
+    if(usernameInput == listOfUsernames[i] && passwordInput == listOfPasswords[i]){
+      res.sendFile(__dirname + '/Success.html');
+      return;
+    }
+  }
+
+  res.sendFile(__dirname + '/Failure.html');
+
+});
+
+app.listen(80);

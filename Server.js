@@ -4,6 +4,10 @@ var url = require('url');
 var fs = require('fs');
 
 http.createServer(function (req, res) {
+
+  //console.log(req);
+  console.log(req.url);
+
   fs.readFile('LoginPage.html', function(err, data) {
     console.log("Received a connection. Serving Login Page...");
     res.writeHead(200, {'Content-Type': 'text/html'});

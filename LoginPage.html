@@ -1,14 +1,32 @@
 <html>
+  <head>
+    <style>
+      body{
+        background-color: #f9f9f9;
+        text-align: center;
+      }
+      #loginDiv {
+        margin: 0 auto;
+        width: auto;
+        border: 2px solid rgb(29, 29, 29);
+        padding: 10px;
+        text-align: center;
+        border-radius: 10px;
+        display: inline-block;
+      }
+    </style>
+  </head>
 <body>
-<h2>Login Module</h2>
+<div id="loginDiv">
+  <h2>Login Module</h2>
 
-<form action="/" method="POST" id="login-form">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Submit">
+  <form action="/" method="POST" id="loginForm">
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="username"><br>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password"><br><br>
+      <input type="submit" value="Submit">
   </form>
-
+</div>
 </body>
 </html>

@@ -15,21 +15,6 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(80))
   .catch(err => console.log(err));
 
-app.get('/add-user', (req, res) => {
-  const login = new Login({
-    username: 'admin',
-    password: 'password'
-  });
-
-  login.save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-});
-
 app.get('/all-users', (req, res) => {
   Login.find()
     .then((result) => {
@@ -40,27 +25,53 @@ app.get('/all-users', (req, res) => {
     })
 });
 
-
-const readInterface = readline.createInterface({
-  input: fs.createReadStream('Logins.txt'),
-  output: process.stdout,
-  console: false
-});
-
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-var listOfUsernames = []; // Created a list of usernames
-var listOfPasswords = []; // Created a list of passwords
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/LoginPage.html');
 });
 
-// Takes the Logins.txt file and puts the username and password into their respective arrays
-readInterface.on('line', function(line) {
-  var words = line.split(" ");
-  listOfUsernames.push(words[0]);
-  listOfPasswords.push(words[1]);
+app.post('/register', (req, res) => {
+  res.sendFile(__dirname + '/RegisterPage.html');
+});
+
+app.post('/login', (req, res) => {
+  res.sendFile(__dirname + '/LoginPage.html');
+});
+
+app.post('/registration-confirmation', urlencodedParser, (req, res) => {
+  var usernameInput = req.body.username; 
+  var passwordInput = req.body.password;
+  var confirmPasswordInput = req.body.passwordConfirm;
+
+  Login.find({"username" : usernameInput})
+  .then((result) => {
+    if(result.length > 0){
+       res.sendFile(__dirname + '/RegistrationFailed.html');
+       console.log("Username already exists");
+     }else if(passwordInput != confirmPasswordInput){
+       res.sendFile(__dirname + '/RegistrationFailed.html');
+       console.log("Passwords did not match");
+     }else{
+       const login = new Login({
+         username: usernameInput,
+         password: passwordInput
+       });
+     
+       login.save()
+         .then((result) => {
+           res.send(result);
+         })
+         .catch((err) => {
+           console.log(err);
+         })
+       res.sendFile(__dirname + '/RegistrationSuccess.html');
+     }
+     console.log(result);
+   })
+   .catch((err) => {
+     console.log(err);
+   })
 });
 
 // Called when the Submit button is clicked

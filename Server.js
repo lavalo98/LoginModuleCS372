@@ -8,12 +8,13 @@ const { db } = require('./Models/loginSchema');
 const app = express();
 
 // Connect to MongoDB
-const dbURI = 'mongodb+srv://LoginWebServer:1htbflrr4YPpbFog@cluster0.jmx1t.mongodb.net/LoginDB';
+//const dbURI = 'mongodb+srv://LoginWebServer:1htbflrr4YPpbFog@cluster0.jmx1t.mongodb.net/LoginDB';
+const dbURI = 'mongodb://172.17.0.7';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(80))
   .catch(err => console.log(err));
 
-/*app.get('/add-user', (req, res) => {
+app.get('/add-user', (req, res) => {
   const login = new Login({
     username: 'admin',
     password: 'password'
@@ -26,7 +27,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((err) => {
       console.log(err);
     })
-});*/
+});
 
 app.get('/all-users', (req, res) => {
   Login.find()

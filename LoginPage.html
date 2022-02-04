@@ -5,6 +5,45 @@
         background-color: #f9f9f9;
         text-align: center;
       }
+
+      .button {
+        appearance: button;
+        backface-visibility: hidden;
+        background-color: #405cf5;
+        border-radius: 6px;
+        border-width: 0;
+        box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+        font-size: 80%;
+        height: 35px;
+        line-height: 1.15;
+        margin: 6px 0 0;
+        outline: none;
+        overflow: hidden;
+        padding: 0 25px;
+        position: relative;
+        text-align: center;
+        text-transform: none;
+        transform: translateZ(0);
+        transition: all .2s,box-shadow .08s ease-in;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        display: inline-block;
+        width: 45%;
+      }
+
+      .button:disabled {
+        cursor: default;
+      }
+
+      .button:focus {
+        box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+      }
+
       #loginDiv {
         margin: 0 auto;
         width: auto;
@@ -16,6 +55,23 @@
         position: relative;
         top: 30%;
       }
+
+      .textBox{
+        height: 40px;
+        width: 300px;
+        font-size: 20px;
+      }
+
+      .textBoxHeader{
+        font-size: 22px;
+        font-weight: 400;
+      }
+
+      .textBoxHeaderDiv{
+        text-align: left;
+        padding-top: 10px;
+      }
+
     </style>
   </head>
 <body>
@@ -23,11 +79,14 @@
   <h2>Login Module</h2>
 
   <form action="/" method="POST" id="loginForm">
-      <label for="username">Username:</label><br>
-      <input type="text" id="username" name="username"><br>
-      <label for="password">Password:</label><br>
-      <input type="password" id="password" name="password"><br><br>
-      <input type="submit" value="Submit">
+      <div class="textBoxHeaderDiv"><label for="username" id="usernameFormText" class="textBoxHeader">Username</label><br></div>
+      <input type="text" id="usernameTextBox" class="textBox" name="username"><br>
+      <div class="textBoxHeaderDiv"><label for="password" id="passwordFormText" class="textBoxHeader">Password</label><br></div>
+      <input type="password" id="passwordTextBox" class="textBox" name="password"><br><br>
+      <div id="buttonArea">
+        <input type="button" class="button" value="Register">
+        <input type="submit" class="button" value="Login">
+      </div>
   </form>
 </div>
 </body>

@@ -1,5 +1,6 @@
 <html>
   <head>
+
     <style>
       body{
         background-color: #f9f9f9;
@@ -60,6 +61,7 @@
         height: 40px;
         width: 300px;
         font-size: 20px;
+        color: #3d3e42;
       }
 
       .textBoxHeader{
@@ -73,20 +75,48 @@
       }
 
     </style>
+
+  <script>
+  function submitMe(obj){
+    if(obj.value == "Register"){
+     document.getElementById('loginForm').action = '/register'
+    }else{
+     document.getElementById('loginForm').action = '/'
+    }
+    document.getElementById('loginForm').submit();
+  }
+
+  function togglePassword() {
+    // toggle the type attribute
+    console.log("Button be working");
+    var x = document.getElementById("passwordTextBox");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+
+  </script>
+  
   </head>
 <body>
 <div id="loginDiv">
   <h2>Login Module</h2>
 
-  <form action="/" method="POST" id="loginForm">
+  <form action="" method="POST" id="loginForm">
       <div class="textBoxHeaderDiv"><label for="username" id="usernameFormText" class="textBoxHeader">Username</label><br></div>
       <input type="text" id="usernameTextBox" class="textBox" name="username"><br>
       <div class="textBoxHeaderDiv"><label for="password" id="passwordFormText" class="textBoxHeader">Password</label><br></div>
-      <input type="password" id="passwordTextBox" class="textBox" name="password"><br><br>
+      <input type="password" id="passwordTextBox" class="textBox" name="password"><br>
+
+      <div class="textBoxHeaderDiv"><input type="checkbox" onclick="togglePassword()">Show Password</div><br>
+      
       <div id="buttonArea">
-        <input type="button" class="button" value="Register">
-        <input type="submit" class="button" value="Login">
+        <input onclick="submitMe(this)" type="button" class="button" value="Register">
+        <input onclick="submitMe(this)" type="submit" class="button" value="Login">
       </div>
+
   </form>
 </div>
 </body>

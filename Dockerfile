@@ -11,6 +11,7 @@ RUN apt update && apt install -y nodejs npm
 RUN npm install express
 RUN npm install body-parser
 RUN npm install mongoose
+RUN npm install bootstrap
 RUN apt clean
 
 # Change current working directory inside the image

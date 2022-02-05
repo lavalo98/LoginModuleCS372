@@ -40,7 +40,7 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/registration-confirmation', urlencodedParser, (req, res) => {
-  var usernameInput = req.body.username; 
+  var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   var confirmPasswordInput = req.body.passwordConfirm;
 
@@ -52,7 +52,11 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
      }else if(passwordInput != confirmPasswordInput){
        res.sendFile(__dirname + '/RegistrationFailed.html');
        console.log("Passwords did not match");
-     }else{
+     }else if(usernameInput.indexOf(' ') >= 0 || passwordInput.indexOf(' ') >= 0){
+      res.sendFile(__dirname + '/RegistrationFailed.html');
+      console.log("Whitespace in username or password");
+     }
+     else{
        const login = new Login({
          username: usernameInput,
          password: passwordInput
@@ -79,6 +83,7 @@ app.post('/', urlencodedParser, (req, res) => {
 
   var usernameInput = req.body.username; // User inputted username
   var passwordInput = req.body.password; // User inputted password
+
 
   Login.find({"username" : usernameInput, "password" : passwordInput})
     .then((result) => {

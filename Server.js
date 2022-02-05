@@ -55,8 +55,10 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
      }else if(usernameInput.indexOf(' ') >= 0 || passwordInput.indexOf(' ') >= 0){
       res.sendFile(__dirname + '/RegistrationFailed.html');
       console.log("Whitespace in username or password");
-     }
-     else{
+     }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
+      res.sendFile(__dirname + '/RegistrationFailed.html');
+      console.log("Username or password is empty");
+     }else{
        const login = new Login({
          username: usernameInput,
          password: passwordInput

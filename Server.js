@@ -1,20 +1,29 @@
+//Libraries
 const fs = require('fs');
 const readline = require('readline');
 const express = require('express');
 const mongoose = require('mongoose');
-const Login = require('./Models/loginSchema');
+const bcrypt = require('bcrypt');
 var bodyParser = require('body-parser');
+
+//Database Information
+const Login = require('./Models/loginSchema');
 const { db } = require('./Models/loginSchema');
+
+//Web Server
 const app = express();
 
-// Connect to MongoDB
-//const dbURI = 'mongodb+srv://LoginWebServer:1htbflrr4YPpbFog@cluster0.jmx1t.mongodb.net/LoginDB';
-//const dbURI = 'mongodb://172.17.0.7';
+//MongoDB URI
+//Not usually safe to include in the source BUT using this only works
+//if your IP is whitelisted (since we're using atlas) so it's fine for now
 const dbURI = 'mongodb+srv://darian:7w4YCd9sZaDCTv2x@cluster0.jmx1t.mongodb.net/LoginDB';
+
+//Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(80))
   .catch(err => console.log(err));
 
+//A page that lists all user data in the database
 app.get('/all-users', (req, res) => {
   Login.find()
     .then((result) => {
@@ -63,7 +72,7 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
          username: usernameInput,
          password: passwordInput
        });
-     
+
        login.save()
          .then((result) => {
            res.send(result);
@@ -78,6 +87,10 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
    .catch((err) => {
      console.log(err);
    })
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/LoginPage.html');
 });
 
 // Called when the Submit button is clicked
@@ -100,13 +113,16 @@ app.post('/', urlencodedParser, (req, res) => {
       console.log(err);
     })
 
-  /*for (let i = 0; i < listOfUsernames.length; i++) {
+  //WAS used for flat-file authentication
+  /*
+  for (let i = 0; i < listOfUsernames.length; i++) {
     if(usernameInput == listOfUsernames[i] && passwordInput == listOfPasswords[i]){
       res.sendFile(__dirname + '/Success.html');
       return;
     }
   }
 
-  res.sendFile(__dirname + '/Failure.html');*/
+  res.sendFile(__dirname + '/Failure.html');
+  */
 
 });

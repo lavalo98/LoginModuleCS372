@@ -122,7 +122,7 @@ app.post('/', urlencodedParser, (req, res) => {
           res.sendFile(__dirname + '/Success.html');
         }
         else {
-          res.sendFile(__dirname + 'Failure.html');
+          res.sendFile(__dirname + '/Failure.html');
         }
       } else {
         res.sendFile(__dirname + '/Failure.html');

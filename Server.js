@@ -113,7 +113,17 @@ app.post('/', urlencodedParser, (req, res) => {
       //Should only get one response back
       if(result.length == 1) {
         var user = result[0];
-        res.sendFile(__dirname + '/Success.html');
+        console.log('');
+        console.log(passwordInput);
+        console.log(user.password);
+        var success = bcrypt.compareSync(passwordInput, user.password);
+        console.log(success);
+        if(success) {
+          res.sendFile(__dirname + '/Success.html');
+        }
+        else {
+          res.sendFile(__dirname + 'Failure.html');
+        }
       } else {
         res.sendFile(__dirname + '/Failure.html');
       }

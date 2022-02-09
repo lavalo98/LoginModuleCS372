@@ -68,9 +68,12 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
       res.sendFile(__dirname + '/RegistrationFailed.html');
       console.log("Username or password is empty");
      }else{
+
+       var hash = bcrypt.hashSync('passwordInput', 12);
+
        const login = new Login({
          username: usernameInput,
-         password: passwordInput
+         password: hash
        });
 
        login.save()
@@ -100,14 +103,20 @@ app.post('/', urlencodedParser, (req, res) => {
   var passwordInput = req.body.password; // User inputted password
 
 
-  Login.find({"username" : usernameInput, "password" : passwordInput})
+  Login.find({"username" : usernameInput})
     .then((result) => {
-      if(result.length == 1){
+
+      console.log('Response on querying database for user ' + usernameInput);
+      console.log('');
+      console.log(result);
+
+      //Should only get one response back
+      if(result.length == 1) {
+        var user = result[0];
         res.sendFile(__dirname + '/Success.html');
-      }else{
+      } else {
         res.sendFile(__dirname + '/Failure.html');
       }
-      console.log(result);
     })
     .catch((err) => {
       console.log(err);

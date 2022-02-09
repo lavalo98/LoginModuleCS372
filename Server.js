@@ -69,7 +69,7 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
       console.log("Username or password is empty");
      }else{
 
-       var hash = bcrypt.hashSync('passwordInput', 12);
+       var hash = bcrypt.hashSync(passwordInput, 12);
 
        const login = new Login({
          username: usernameInput,

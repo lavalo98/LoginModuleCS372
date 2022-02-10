@@ -82,7 +82,8 @@
     if(obj.value == "Register"){
      document.getElementById('loginForm').action = '/register'
     }else{
-     document.getElementById('loginForm').action = '/'
+      document.getElementById("passwordTextBox").x.type = "password";
+      document.getElementById('loginForm').action = '/'
     }
     document.getElementById('loginForm').submit();
   }

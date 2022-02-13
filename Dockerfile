@@ -13,6 +13,7 @@ RUN npm install body-parser
 RUN npm install mongoose
 RUN npm install bootstrap
 RUN npm install bcrypt
+RUN npm install pug
 RUN apt clean
 
 # Change current working directory inside the image

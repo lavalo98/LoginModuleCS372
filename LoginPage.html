@@ -1,6 +1,6 @@
 <html>
   <head>
-
+    <link rel="stylesheet" type="text/css" href="public/css/loginStyle.css" />
     <style>
       body{
         background-color: #f9f9f9;
@@ -100,7 +100,6 @@
   }
 
   </script>
-
   </head>
 <body>
 <div id="loginDiv">
@@ -112,13 +111,12 @@
       <div class="textBoxHeaderDiv"><label for="password" id="passwordFormText" class="textBoxHeader">Password</label><br></div>
       <input type="password" id="passwordTextBox" class="textBox" name="password"><br>
 
-      <div class="textBoxHeaderDiv"><input type="checkbox" onclick="togglePassword()">Show Password</div><br>
+      <div class="textBoxHeaderDiv"><input type="checkbox" onclick="togglePassword()"> Show Password</div><br>
 
       <div id="buttonArea">
         <input onclick="submitMe(this)" type="button" class="button" value="Register">
         <input onclick="submitMe(this)" type="submit" class="button" value="Login">
       </div>
-
   </form>
 </div>
 </body>

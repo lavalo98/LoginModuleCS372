@@ -4,14 +4,19 @@ const readline = require('readline');
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const path = require("path");
 var bodyParser = require('body-parser');
 
 //Database Information
 const Login = require('./Models/loginSchema');
 const { db } = require('./Models/loginSchema');
+const { Console } = require('console');
 
 //Web Server
 const app = express();
+
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 //MongoDB URI
 //Not usually safe to include in the source BUT using this only works
@@ -56,17 +61,20 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
   Login.find({"username" : usernameInput})
   .then((result) => {
     if(result.length > 0){
-       res.sendFile(__dirname + '/RegistrationFailed.html');
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "Username already exists!" });
        console.log("Username already exists");
      }else if(passwordInput != confirmPasswordInput){
-       res.sendFile(__dirname + '/RegistrationFailed.html');
+        res.render("RegistrationFailed", { title: "Registration Failed", message: "Passwords do not match!" });
        console.log("Passwords did not match");
      }else if(usernameInput.indexOf(' ') >= 0 || passwordInput.indexOf(' ') >= 0){
-      res.sendFile(__dirname + '/RegistrationFailed.html');
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "No whitespaces are allowed!" });
       console.log("Whitespace in username or password");
      }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
-      res.sendFile(__dirname + '/RegistrationFailed.html');
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "One or more fields are empty!" });
       console.log("Username or password is empty");
+     }else if(usernameInput == passwordInput){
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "Username and Password can not be the same value!" });
+      console.log("Username and Password can not be the same value!");
      }else{
 
        var hash = bcrypt.hashSync(passwordInput, 12);
@@ -122,9 +130,13 @@ app.post('/', urlencodedParser, (req, res) => {
           res.sendFile(__dirname + '/Success.html');
         }
         else {
+          Console.log("Username and/or password combination do not match database");
           res.sendFile(__dirname + '/Failure.html');
         }
-      } else {
+      }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
+        res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
+        console.log("Username or password is empty");
+      }else {
         res.sendFile(__dirname + '/Failure.html');
       }
     })

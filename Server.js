@@ -131,13 +131,15 @@ app.post('/', urlencodedParser, (req, res) => {
         }
         else {
           console.log("Username and/or password combination do not match database");
-          res.sendFile(__dirname + '/Failure.html');
+          //res.sendFile(__dirname + '/Failure.html');
+          res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
         }
       }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
         res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
         console.log("Username or password is empty");
       }else {
-        res.sendFile(__dirname + '/Failure.html');
+        res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
+        //res.sendFile(__dirname + '/Failure.html');
       }
     })
     .catch((err) => {

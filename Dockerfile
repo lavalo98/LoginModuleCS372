@@ -6,14 +6,6 @@ FROM ubuntu
 # from locking the build up
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Change current working directory inside the image
-WORKDIR /usr/src/app
-
-# Copy local files to image filesystem
-COPY * ./
-COPY node_modules /node_modules
-COPY Models Models
-
 # Shell commands that are run inside containers to build the image
 RUN apt update && apt install -y nodejs npm
 RUN npm install express
@@ -23,6 +15,14 @@ RUN npm install bootstrap
 RUN npm install bcrypt
 RUN npm install pug
 RUN apt clean
+
+# Change current working directory inside the image
+WORKDIR /usr/src/app
+
+# Copy local files to image filesystem
+COPY * ./
+COPY node_modules /node_modules
+COPY Models Models
 
 # Declare that port 80 is a port open by containers runnning this image
 EXPOSE 80

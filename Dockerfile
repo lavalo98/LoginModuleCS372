@@ -8,10 +8,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Shell commands that are run inside containers to build the image
 RUN apt update
+RUN apt install -y npm
 RUN apt install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt install -y npm nodejs
-RUN apt install -y curl
 RUN apt install -y nodejs
 RUN npm install express
 RUN npm install body-parser

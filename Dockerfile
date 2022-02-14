@@ -27,6 +27,7 @@ WORKDIR /usr/src/app
 COPY * ./
 COPY node_modules /node_modules
 COPY Models Models
+COPY views views
 
 # Declare that port 80 is a port open by containers runnning this image
 EXPOSE 80

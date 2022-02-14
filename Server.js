@@ -29,7 +29,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 
 //A page that lists all user data in the database
-app.get('/all-users', (req, res) => {
+/*app.get('/all-users', (req, res) => {
   Login.find()
     .then((result) => {
       res.send(result);
@@ -37,7 +37,7 @@ app.get('/all-users', (req, res) => {
     .catch((err) => {
       console.log(err);
     })
-});
+});*/
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 

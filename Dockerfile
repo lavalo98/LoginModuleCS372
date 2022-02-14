@@ -7,7 +7,7 @@ FROM ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Shell commands that are run inside containers to build the image
-RUN RUN apt update
+RUN apt update
 RUN apt install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt install -y npm nodejs

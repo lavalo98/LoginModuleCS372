@@ -130,7 +130,7 @@ app.post('/', urlencodedParser, (req, res) => {
           res.sendFile(__dirname + '/Success.html');
         }
         else {
-          Console.log("Username and/or password combination do not match database");
+          console.log("Username and/or password combination do not match database");
           res.sendFile(__dirname + '/Failure.html');
         }
       }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){

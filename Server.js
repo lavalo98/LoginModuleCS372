@@ -32,7 +32,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 
 //A page that lists all user data in the database
-/*app.get('/all-users', (req, res) => {
+app.get('/all-users', (req, res) => {
   Login.find()
     .then((result) => {
       res.send(result);
@@ -40,7 +40,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((err) => {
       console.log(err);
     })
-});*/
+});
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
@@ -126,14 +126,14 @@ app.post('/', urlencodedParser, (req, res) => {
         var success = bcrypt.compareSync(passwordInput, user.password);
         console.log(success);
         if(success) {
-          res.sendFile(__dirname + '/Success.html');
+          res.render("Home", { username: usernameInput});
         }
       }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
         console.log("Username or password is empty");
-         res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
+        res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
       }else {
         console.log("Username and/or password combination do not match database");
-         res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
+        res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
       }
     })
     .catch((err) => {

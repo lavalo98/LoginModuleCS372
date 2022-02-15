@@ -18,6 +18,9 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
+//Sets up use for .css files
+app.use(express.static(path.join(__dirname, 'public')));
+
 //MongoDB URI
 //Not usually safe to include in the source BUT using this only works
 //if your IP is whitelisted (since we're using atlas) so it's fine for now
@@ -61,20 +64,20 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
   Login.find({"username" : usernameInput})
   .then((result) => {
     if(result.length > 0){
+      console.log("Username already exists");
       res.render("RegistrationFailed", { title: "Registration Failed", message: "Username already exists!" });
-       console.log("Username already exists");
      }else if(passwordInput != confirmPasswordInput){
-        res.render("RegistrationFailed", { title: "Registration Failed", message: "Passwords do not match!" });
-       console.log("Passwords did not match");
+      console.log("Passwords did not match");
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "Passwords do not match!" });
      }else if(usernameInput.indexOf(' ') >= 0 || passwordInput.indexOf(' ') >= 0){
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "No whitespaces are allowed!" });
       console.log("Whitespace in username or password");
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "No whitespaces are allowed!" });
      }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "One or more fields are empty!" });
       console.log("Username or password is empty");
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "One or more fields are empty!" });
      }else if(usernameInput == passwordInput){
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "Username and Password can not be the same value!" });
       console.log("Username and Password can not be the same value!");
+      res.render("RegistrationFailed", { title: "Registration Failed", message: "Username and Password can not be the same value!" });
      }else{
 
        var hash = bcrypt.hashSync(passwordInput, 12);
@@ -98,10 +101,6 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
    .catch((err) => {
      console.log(err);
    })
-});
-
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/LoginPage.html');
 });
 
 // Called when the Submit button is clicked
@@ -129,33 +128,15 @@ app.post('/', urlencodedParser, (req, res) => {
         if(success) {
           res.sendFile(__dirname + '/Success.html');
         }
-        else {
-          console.log("Username and/or password combination do not match database");
-          //res.sendFile(__dirname + '/Failure.html');
-          res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
-        }
       }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
-        res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
         console.log("Username or password is empty");
+         res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
       }else {
-        res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
-        //res.sendFile(__dirname + '/Failure.html');
+        console.log("Username and/or password combination do not match database");
+         res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
       }
     })
     .catch((err) => {
       console.log(err);
     })
-
-  //WAS used for flat-file authentication
-  /*
-  for (let i = 0; i < listOfUsernames.length; i++) {
-    if(usernameInput == listOfUsernames[i] && passwordInput == listOfPasswords[i]){
-      res.sendFile(__dirname + '/Success.html');
-      return;
-    }
-  }
-
-  res.sendFile(__dirname + '/Failure.html');
-  */
-
 });

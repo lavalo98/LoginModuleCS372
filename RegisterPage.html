@@ -22,6 +22,18 @@
     }
   }
 
+  function validateForm() {
+        var usernameField = document.forms["registrationForm"]["username"].value;
+        var passwordField = document.forms["registrationForm"]["password"].value;
+        var passwordConfirmField = document.forms["registrationForm"]["passwordConfirm"].value;
+
+        if (usernameField == "" || passwordField == "" || passwordConfirmField == "") {
+            return false;
+        }else{
+          return true;
+        }
+      }
+
 </script>
 
   </head>
@@ -29,13 +41,13 @@
 <div id="registrationDiv">
   <h2>Registration</h2>
 
-  <form action="/registration-confirmation" method="POST" id="registerForm">
+  <form action="/registration-confirmation" method="POST" id="registerForm" name="registrationForm" onsubmit="return validateForm()">
       <div class="textBoxHeaderDiv"><label for="username" id="usernameFormText" class="textBoxHeader">Username</label><br></div>
-      <input type="text" id="usernameTextBox" class="textBox" name="username"><br>
+      <input type="text" id="usernameTextBox" class="textBox" name="username" required><br>
       <div class="textBoxHeaderDiv"><label for="password" id="passwordFormText" class="textBoxHeader">Password</label><br></div>
-      <input type="password" id="passwordTextBox" class="textBox" name="password"><br>
+      <input type="password" id="passwordTextBox" class="textBox" name="password" required><br>
       <div class="textBoxHeaderDiv"><label for="passwordConfirm" id="passwordConfirmFormText" class="textBoxHeader">Confirm Password</label><br></div>
-      <input type="password" id="passwordConfirmTextBox" class="textBox" name="passwordConfirm"><br>
+      <input type="password" id="passwordConfirmTextBox" class="textBox" name="passwordConfirm" required><br>
 
       <div class="textBoxHeaderDiv"><input type="checkbox" onclick="togglePassword(),toggleConfirmPassword()">Show Password</div><br>
 

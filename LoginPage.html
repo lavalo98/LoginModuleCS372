@@ -10,12 +10,14 @@
             document.getElementById('loginForm').action = '/'
           }
             document.getElementById('loginForm').submit();
+        }else{
+          document.getElementById('loginForm').action = '/register'
+          document.getElementById('loginForm').submit();
         }
       }
     
       function togglePassword() {
         // toggle the type attribute
-        console.log("Button be working");
         var x = document.getElementById("passwordTextBox");
         if (x.type === "password") {
           x.type = "text";
@@ -25,10 +27,10 @@
       }
 
       function validateForm() {
-        var x = document.forms["loginForm"]["username"].value;
-        var x = document.forms["loginForm"]["password"].value;
+        var usernameField = document.forms["loginForm"]["username"].value;
+        var passwordField = document.forms["loginForm"]["password"].value;
 
-        if (x == "" || y == "") {
+        if (usernameField == "" || passwordField == "") {
             return false;
         }else{
           return true;

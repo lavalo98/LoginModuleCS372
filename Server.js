@@ -141,6 +141,10 @@ app.post('/', urlencodedParser, (req, res) => {
         if(success) {
           res.render("Home", { username: usernameInput});
         }
+        else {
+          console.log("Username and/or password combination do not match database");
+          res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
+        }
       }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
         console.log("Username or password is empty");
         res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });

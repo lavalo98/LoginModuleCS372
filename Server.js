@@ -27,7 +27,7 @@ console.log("Attempting to get DB URI from mongodb.uri...");
 
 try {
     dbURI = fs.readFileSync('mongodb.uri', 'utf8');
-    console.log(data);
+    console.log(dbURI);
 } catch(e) {
     console.log('Error:', e.stack);
     //Default to our MongoDB Atlas instance

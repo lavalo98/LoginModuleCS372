@@ -21,7 +21,7 @@ app.set("views", path.join(__dirname, "views"));
 //Sets up use for .css files
 app.use(express.static(path.join(__dirname, 'public')));
 
-const dbURI = "";
+dbURI = "";
 
 console.log("Attempting to get DB URI from mongodb.uri...");
 

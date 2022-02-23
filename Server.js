@@ -21,10 +21,23 @@ app.set("views", path.join(__dirname, "views"));
 //Sets up use for .css files
 app.use(express.static(path.join(__dirname, 'public')));
 
+const dbURI;
+
+console.log("Attempting to get DB URI from mongodb.uri...");
+
+try {
+    dbURI = fs.readFileSync('mongodb.uri', 'utf8');
+    console.log(data);
+} catch(e) {
+    console.log('Error:', e.stack);
+    //Default to our MongoDB Atlas instance
+    dbURI = 'mongodb+srv://darian:7w4YCd9sZaDCTv2x@cluster0.jmx1t.mongodb.net/LoginDB';
+}
+
 //MongoDB URI
 //Not usually safe to include in the source BUT using this only works
 //if your IP is whitelisted (since we're using atlas) so it's fine for now
-const dbURI = 'mongodb+srv://darian:7w4YCd9sZaDCTv2x@cluster0.jmx1t.mongodb.net/LoginDB';
+//const dbURI = 'mongodb+srv://darian:7w4YCd9sZaDCTv2x@cluster0.jmx1t.mongodb.net/LoginDB';
 
 //Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })

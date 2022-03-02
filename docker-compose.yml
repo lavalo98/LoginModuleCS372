@@ -16,5 +16,7 @@ services:
   loginmodule:
     image: loginmodule
     restart: always
+    build:
+      context: .
     ports:
       - 80:80

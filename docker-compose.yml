@@ -12,3 +12,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+
+  loginmodule:
+    image: loginmodule
+    restart: always
+    ports:
+      - 80:80

@@ -15,6 +15,11 @@ const { Console } = require('console');
 //Web Server
 const app = express();
 
+const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper", 
+                   "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman", 
+                   "Avengers", "Dragon Ball Z", "Dragonball Super", "Dragon Ball", "Dragon Ball GT", 
+                   "First Reformed", "Zama", "Transformers"];
+
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
@@ -58,7 +63,12 @@ app.get('/all-users', (req, res) => {
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/LoginPage.html');
+  res.render("login", {alertShow: ""})
+  //res.sendFile(__dirname + '/LoginPage.html');
+});
+
+app.get('/testing', (req, res) => {
+  res.render("Test", {movieList});
 });
 
 app.post('/register', (req, res) => {
@@ -136,21 +146,18 @@ app.post('/', urlencodedParser, (req, res) => {
         console.log('');
         console.log(passwordInput);
         console.log(user.password);
+        console.log(user.lastLoginTime);
+        /*Login.updateOne({username : usernameInput}, update, (err, res) => {
+          console.log(res);
+        })*/
         var success = bcrypt.compareSync(passwordInput, user.password);
         console.log(success);
         if(success) {
           res.render("Home", { username: usernameInput});
         }
-        else {
-          console.log("Username and/or password combination do not match database");
-          res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
-        }
-      }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
-        console.log("Username or password is empty");
-        res.render("LoginFailed", { title: "Login Failed", message: "One or more fields are empty!" });
       }else {
         console.log("Username and/or password combination do not match database");
-        res.render("LoginFailed", { title: "Login Failed", message: "Username and/or password combination do not match database" });
+        res.render("login", {alertShow: "show"})
       }
     })
     .catch((err) => {

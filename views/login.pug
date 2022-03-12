@@ -53,7 +53,8 @@ head
     #buttonArea
       input.button(onclick='submitRegistration(this)' type='button' value='Register')
       input.button(onclick='submitLogin(this)' type='submit' value='Login')
-#alertBox.alert.alert-danger.alert-dismissible.fade(class=alertShow)(role='alert')
+- const myClasses = [alertShow, "alert", "alert-danger", "alert-dismissible", "fade"]
+#alertBox(class=myClasses role='alert')
   strong Login Failed!
   |  Username and/or password combination do not match database.
   button.close(type='button' data-dismiss='alert' aria-label='Close')

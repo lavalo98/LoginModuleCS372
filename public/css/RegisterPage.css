@@ -70,3 +70,13 @@
         text-align: left;
         padding-top: 20px;
     }
+
+    #alertBox{
+        margin: 0 auto;
+        width: fit-content;
+        text-align: center;
+        border-radius: 15px;
+        position: relative;
+        top: 27%;
+        font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    }

@@ -4,7 +4,7 @@ const readline = require('readline');
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const path = require("path");
+const path = require('path');
 var bodyParser = require('body-parser');
 
 //Database Information
@@ -60,7 +60,9 @@ app.get('/all-users', (req, res) => {
     })
 });
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+
 
 app.get('/', (req, res) => {
   res.render("login", {alertShow: ""})
@@ -72,7 +74,8 @@ app.get('/testing', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  res.sendFile(__dirname + '/RegisterPage.html');
+  res.render("registration", {alertShow: ""})
+  //res.sendFile(__dirname + '/RegisterPage.html');
 });
 
 app.post('/login', (req, res) => {
@@ -88,19 +91,19 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
   .then((result) => {
     if(result.length > 0){
       console.log("Username already exists");
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "Username already exists!" });
+      res.render("registration", { alertShow: "show", message: "Username already exists!" });
      }else if(passwordInput != confirmPasswordInput){
       console.log("Passwords did not match");
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "Passwords do not match!" });
+      res.render("registration", { alertShow: "show", message: "Passwords do not match!" });
      }else if(usernameInput.indexOf(' ') >= 0 || passwordInput.indexOf(' ') >= 0){
       console.log("Whitespace in username or password");
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "No whitespaces are allowed!" });
+      res.render("registration", { alertShow: "show", message: "No whitespaces are allowed!" });
      }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
       console.log("Username or password is empty");
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "One or more fields are empty!" });
+      res.render("registration", { alertShow: "show", message: "One or more fields are empty!" });
      }else if(usernameInput == passwordInput){
       console.log("Username and Password can not be the same value!");
-      res.render("RegistrationFailed", { title: "Registration Failed", message: "Username and Password can not be the same value!" });
+      res.render("registration", { alertShow: "show", message: "Username and Password can not be the same value!" });
      }else{
 
        var hash = bcrypt.hashSync(passwordInput, 12);
@@ -132,7 +135,6 @@ app.post('/', urlencodedParser, (req, res) => {
   var usernameInput = req.body.username; // User inputted username
   var passwordInput = req.body.password; // User inputted password
 
-
   Login.find({"username" : usernameInput})
     .then((result) => {
 
@@ -152,7 +154,7 @@ app.post('/', urlencodedParser, (req, res) => {
         })*/
         var success = bcrypt.compareSync(passwordInput, user.password);
         console.log(success);
-        if(success) {
+        if(success) { 
           res.render("Home", { username: usernameInput});
         }
       }else {

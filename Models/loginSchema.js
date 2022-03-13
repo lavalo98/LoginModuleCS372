@@ -10,6 +10,18 @@ const loginSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    lastFailedLoginTime: {
+        type: Date,
+        default: Date.now
+    },
+    failedLoginAttempts: {
+        type: Number,
+        default: 0
+    },
+    expirationDate: {
+        type: Date,
+        default: Date.now
+    },
 }, {timestamps: true});
 
 const Login = mongoose.model('Login', loginSchema);

@@ -55,7 +55,7 @@ head
       input.button(onclick='submitLogin(this)' type='submit' value='Login')
 - const myClasses = [alertShow, "alert", "alert-danger", "alert-dismissible", "fade"]
 #alertBox(class=myClasses role='alert')
-  strong Login Failed!
-  |  Username and/or password combination do not match database.
+  strong #{header}
+  |  #{message}
   button.close(type='button' data-dismiss='alert' aria-label='Close')
     span(aria-hidden='true') &times;

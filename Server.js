@@ -91,19 +91,19 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
   .then((result) => {
     if(result.length > 0){
       console.log("Username already exists");
-      res.render("registration", { alertShow: "show", message: "Username already exists!" });
+      return res.render("registration", { alertShow: "show", message: "Username already exists!" });
      }else if(passwordInput != confirmPasswordInput){
       console.log("Passwords did not match");
-      res.render("registration", { alertShow: "show", message: "Passwords do not match!" });
+      return res.render("registration", { alertShow: "show", message: "Passwords do not match!" });
      }else if(usernameInput.indexOf(' ') >= 0 || passwordInput.indexOf(' ') >= 0){
       console.log("Whitespace in username or password");
-      res.render("registration", { alertShow: "show", message: "No whitespaces are allowed!" });
+      return res.render("registration", { alertShow: "show", message: "No whitespaces are allowed!" });
      }else if(usernameInput == "" || passwordInput == "" || usernameInput == undefined || passwordInput == undefined){
       console.log("Username or password is empty");
-      res.render("registration", { alertShow: "show", message: "One or more fields are empty!" });
+      return res.render("registration", { alertShow: "show", message: "One or more fields are empty!" });
      }else if(usernameInput == passwordInput){
       console.log("Username and Password can not be the same value!");
-      res.render("registration", { alertShow: "show", message: "Username and Password can not be the same value!" });
+      return res.render("registration", { alertShow: "show", message: "Username and Password can not be the same value!" });
      }else{
 
        var hash = bcrypt.hashSync(passwordInput, 12);
@@ -115,12 +115,12 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
 
        login.save()
          .then((result) => {
-           res.send(result);
+          res.send(result);
          })
          .catch((err) => {
            console.log(err);
          })
-       res.sendFile(__dirname + '/RegistrationSuccess.html');
+         return res.sendFile(__dirname + '/RegistrationSuccess.html');
      }
      console.log(result);
    })
@@ -135,6 +135,9 @@ app.post('/', urlencodedParser, (req, res) => {
   var usernameInput = req.body.username; // User inputted username
   var passwordInput = req.body.password; // User inputted password
 
+  var dateTime = new Date();
+  var dateTimePlus24 = new Date(new Date().getTime()+(1000*60*60)); // 1 Hour past current date
+
   Login.find({"username" : usernameInput})
     .then((result) => {
 
@@ -148,18 +151,33 @@ app.post('/', urlencodedParser, (req, res) => {
         console.log('');
         console.log(passwordInput);
         console.log(user.password);
-        console.log(user.lastLoginTime);
-        /*Login.updateOne({username : usernameInput}, update, (err, res) => {
-          console.log(res);
-        })*/
+       
         var success = bcrypt.compareSync(passwordInput, user.password);
         console.log(success);
-        if(success) { 
-          res.render("Home", { username: usernameInput});
+        if(dateTime >= user.expirationDate){ 
+          if(success) {
+            Login.findOneAndUpdate({'username' : user.username}, {'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {
+              if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+            }); 
+            res.render("Home", { username: user.username});
+          }else {
+            if(user.failedLoginAttempts >= 4){
+              Login.findOneAndUpdate({'username' : user.username}, {'expirationDate' : dateTimePlus24, 'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {
+                if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+              });
+            }
+            Login.findOneAndUpdate({'username' : user.username}, {'lastFailedLoginTime' : dateTime, $inc : {'failedLoginAttempts' : 1}}, {upsert: true}, function(err, doc) {
+              if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+            }); 
+            console.log("Username and/or password combination do not match database");
+            res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
+          }
+        }else{ 
+          return res.render("login", {alertShow: "show", header: "Account LOCKED", message: "You have exceeded 5 attempts, account locked for 1 hour!"});
         }
-      }else {
+      }else{
         console.log("Username and/or password combination do not match database");
-        res.render("login", {alertShow: "show"})
+        res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
       }
     })
     .catch((err) => {

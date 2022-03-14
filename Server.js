@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 
 //Database Information
 const Login = require('./Models/loginSchema');
+const Movie = require('./Models/movieSchema');
 const { db } = require('./Models/loginSchema');
 const { Console } = require('console');
 
@@ -65,12 +66,32 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 app.get('/', (req, res) => {
-  res.render("login", {alertShow: ""})
+  res.render("login", {alertShow: ""});
+  //res.sendFile(__dirname + '/LoginPage.html');
+});
+
+app.get('/addmovie', (req, res) => {
+  res.render("AddMovies", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.get('/testing', (req, res) => {
-  res.render("Test", {movieList});
+  var movieNameArray = new Array();
+  var movieImageArray = new Array();
+
+  Movie.find({})
+    .then((result) => {
+      result.forEach((movieName) => {
+        movieNameArray.push(movieName.movieName);
+      })
+      result.forEach((movieName) => {
+        movieImageArray.push(movieName.movieImageName);
+      })
+      res.render("Test", {movieNameArray, movieImageArray});
+  })
+  .catch((err) => {
+     console.log(err);
+   })
 });
 
 app.post('/register', (req, res) => {
@@ -80,6 +101,45 @@ app.post('/register', (req, res) => {
 
 app.post('/login', (req, res) => {
   res.sendFile(__dirname + '/LoginPage.html');
+});
+
+app.post('/movie-addition', urlencodedParser, (req, res) => {
+  var movieName = req.body.movieName;
+  var releaseYear = req.body.releaseYear;
+  var description = req.body.description;
+  var movieImageName = req.body.movieImageName;
+  var rating = req.body.rating;
+  var runtime = req.body.runtime;
+  var category = req.body.category;
+
+  console.log(movieName);
+  console.log(releaseYear);
+  console.log(description);
+  console.log(movieImageName);
+  console.log(rating);
+  console.log(runtime + " mins");
+  console.log(category);
+
+  const movie = new Movie({
+    movieName: movieName,
+    releaseYear: releaseYear,
+    description: description,
+    movieImageName: movieImageName,
+    rating: rating,
+    runtime: runtime,
+    category: category
+  });
+
+  movie.save()
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+  return res.render("AddMovies", {alertShow: ""});
+
 });
 
 app.post('/registration-confirmation', urlencodedParser, (req, res) => {

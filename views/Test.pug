@@ -4,9 +4,6 @@ style.
   border:1px solid black;
   }
   td{
-      background-image: url("/images/movie-poster.jpg");
-      background-size: cover;
-      background-color: green;
       width: 280px;
       height: 418px;
       text-align: center;
@@ -34,15 +31,17 @@ style.
       z-index: 5;
       visibility: hidden;
   }
+  #movieData{
+  }
 
 h2 Movie Page Idea
 table(style='width: auto; height: auto; margin: 0 auto; border-collapse: separate; border-spacing: 50px 50px;')
     tr 
-        for movie, i in movieList
+        for movie, i in movieNameArray
             if i % 7 == 0 && i != 0
                 tr
-                td
+                td#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
                     div= movie
             else 
-                td
+                td#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
                     div= movie

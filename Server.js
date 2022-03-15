@@ -78,6 +78,7 @@ app.get('/addmovie', (req, res) => {
 app.get('/testing', (req, res) => {
   var movieNameArray = new Array();
   var movieImageArray = new Array();
+  var releaseYearArray = new Array();
 
   Movie.find({})
     .then((result) => {
@@ -87,7 +88,10 @@ app.get('/testing', (req, res) => {
       result.forEach((movieName) => {
         movieImageArray.push(movieName.movieImageName);
       })
-      res.render("Test", {movieNameArray, movieImageArray});
+      result.forEach((movieName) => {
+        releaseYearArray.push(movieName.releaseYear);
+      })
+      res.render("Test", {movieNameArray, movieImageArray, releaseYearArray});
   })
   .catch((err) => {
      console.log(err);

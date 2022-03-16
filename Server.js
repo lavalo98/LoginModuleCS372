@@ -16,9 +16,9 @@ const { Console } = require('console');
 //Web Server
 const app = express();
 
-const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper", 
-                   "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman", 
-                   "Avengers", "Dragon Ball Z", "Dragonball Super", "Dragon Ball", "Dragon Ball GT", 
+const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper",
+                   "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman",
+                   "Avengers", "Dragon Ball Z", "Dragonball Super", "Dragon Ball", "Dragon Ball GT",
                    "First Reformed", "Zama", "Transformers"];
 
 app.set("view engine", "pug");
@@ -147,6 +147,7 @@ app.post('/movie-addition', urlencodedParser, (req, res) => {
 });
 
 app.post('/registration-confirmation', urlencodedParser, (req, res) => {
+  var emailInput = req.body.email;
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   var confirmPasswordInput = req.body.passwordConfirm;
@@ -173,6 +174,7 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
        var hash = bcrypt.hashSync(passwordInput, 12);
 
        const login = new Login({
+         email: emailInput,
          username: usernameInput,
          password: hash
        });
@@ -215,14 +217,14 @@ app.post('/', urlencodedParser, (req, res) => {
         console.log('');
         console.log(passwordInput);
         console.log(user.password);
-       
+
         var success = bcrypt.compareSync(passwordInput, user.password);
         console.log(success);
-        if(dateTime >= user.expirationDate){ 
+        if(dateTime >= user.expirationDate){
           if(success) {
             Login.findOneAndUpdate({'username' : user.username}, {'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
-            }); 
+            });
             res.render("Home", { username: user.username});
           }else {
             if(user.failedLoginAttempts >= 4){
@@ -232,11 +234,11 @@ app.post('/', urlencodedParser, (req, res) => {
             }
             Login.findOneAndUpdate({'username' : user.username}, {'lastFailedLoginTime' : dateTime, $inc : {'failedLoginAttempts' : 1}}, {upsert: true}, function(err, doc) {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
-            }); 
+            });
             console.log("Username and/or password combination do not match database");
             res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
           }
-        }else{ 
+        }else{
           return res.render("login", {alertShow: "show", header: "Account LOCKED", message: "You have exceeded 5 attempts, account locked for 1 hour!"});
         }
       }else{

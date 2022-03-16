@@ -36,25 +36,36 @@ head
 #registrationDiv
   h2 Registration
   form#registerForm(action='/registration-confirmation' method='POST' name='registrationForm' onsubmit='return validateForm()')
+
+    .textBoxHeaderDiv
+      label#emailFormText.textBoxHeader(for='email') Email
+      br
+    input#emailTextBox.textBox(type='text' name='Email')
+    br
+
     .textBoxHeaderDiv
       label#usernameFormText.textBoxHeader(for='username') Username
       br
     input#usernameTextBox.textBox(type='text' name='username' required='')
     br
+
     .textBoxHeaderDiv
       label#passwordFormText.textBoxHeader(for='password') Password
       br
     input#passwordTextBox.textBox(type='password' name='password' required='')
     br
+
     .textBoxHeaderDiv
       label#passwordConfirmFormText.textBoxHeader(for='passwordConfirm') Confirm Password
       br
     input#passwordConfirmTextBox.textBox(type='password' name='passwordConfirm' required='')
     br
+
     .textBoxHeaderDiv
       input(type='checkbox' onclick='togglePassword(),toggleConfirmPassword()')
       | Show Password
     br
+
     #buttonArea
       input.button(type='submit' value='Confirm')
 - const myClasses = [alertShow, "alert", "alert-danger", "alert-dismissible", "fade"]

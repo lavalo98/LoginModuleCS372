@@ -36,16 +36,25 @@ head
 #loginDiv
   h2 Login Module
   form#loginForm(action='' method='POST' name='loginForm')
+
+    .textBoxHeaderDiv
+      label#emailFormText.textBoxHeader(for='email') Email
+      br
+    input#emailTextBox.textBox(type='text' name='Email')
+    br
+
     .textBoxHeaderDiv
       label#usernameFormText.textBoxHeader(for='username') Username
       br
     input#usernameTextBox.textBox(type='text' name='username' required='')
     br
+
     .textBoxHeaderDiv
       label#passwordFormText.textBoxHeader(for='password') Password
       br
     input#passwordTextBox.textBox(type='password' name='password' required='')
     br
+
     .textBoxHeaderDiv
       input(type='checkbox' onclick='togglePassword()')
       |  Show Password

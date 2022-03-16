@@ -1,4 +1,4 @@
-//Libraries
+// Libraries
 const fs = require('fs');
 const readline = require('readline');
 const express = require('express');
@@ -7,20 +7,22 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 var bodyParser = require('body-parser');
 
-//Database Information
+// Database Information
 const Login = require('./Models/loginSchema');
 const Movie = require('./Models/movieSchema');
 const { db } = require('./Models/loginSchema');
 const { Console } = require('console');
 
-//Web Server
+// Web Server
 const app = express();
 
+// Currently hard-coded list of movies, will either be in database or filesystem later
 const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper",
                    "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman",
                    "Avengers", "Dragon Ball Z", "Dragonball Super", "Dragon Ball", "Dragon Ball GT",
                    "First Reformed", "Zama", "Transformers"];
 
+//Set pug as view engine, "views" as location for .pug files
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
@@ -31,6 +33,10 @@ dbURI = "";
 
 console.log("Attempting to get DB URI from mongodb.uri...");
 
+//Set the URI of the database. If a mongodb.uri exists, load the URI from there.
+//Otherwise, default to MongoDB Atlas instance
+//Not usually safe to include in the source BUT using this only works
+//if your IP is whitelisted (since we're using atlas)
 try {
     dbURI = fs.readFileSync('mongodb.uri', 'utf8');
     console.log(dbURI);
@@ -39,11 +45,6 @@ try {
     //Default to our MongoDB Atlas instance
     dbURI = 'mongodb+srv://darian:7w4YCd9sZaDCTv2x@cluster0.jmx1t.mongodb.net/LoginDB';
 }
-
-//MongoDB URI
-//Not usually safe to include in the source BUT using this only works
-//if your IP is whitelisted (since we're using atlas) so it's fine for now
-//const dbURI = 'mongodb+srv://darian:7w4YCd9sZaDCTv2x@cluster0.jmx1t.mongodb.net/LoginDB';
 
 //Connect to MongoDB
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -58,6 +59,7 @@ app.get('/all-users', (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      res.send(err);
     })
 });
 
@@ -101,10 +103,6 @@ app.get('/testing', (req, res) => {
 app.post('/register', (req, res) => {
   res.render("registration", {alertShow: ""})
   //res.sendFile(__dirname + '/RegisterPage.html');
-});
-
-app.post('/login', (req, res) => {
-  res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.post('/movie-addition', urlencodedParser, (req, res) => {
@@ -154,7 +152,8 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
 
   Login.find({"username" : usernameInput})
   .then((result) => {
-    if(result.length > 0){
+    //Various tests for account standards when registering
+    if(result.length > 0) {
       console.log("Username already exists");
       return res.render("registration", { alertShow: "show", message: "Username already exists!" });
      }else if(passwordInput != confirmPasswordInput){
@@ -171,6 +170,8 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
       return res.render("registration", { alertShow: "show", message: "Username and Password can not be the same value!" });
      }else{
 
+       //Account information looks good.
+       //Hash the password, save account information to the database
        var hash = bcrypt.hashSync(passwordInput, 12);
 
        const login = new Login({

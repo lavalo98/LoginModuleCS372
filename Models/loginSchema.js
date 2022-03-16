@@ -2,33 +2,38 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const loginSchema = new mongoose.Schema({
-    email: {
+    email: { // Email Address
       type: String,
       required: false,
       default: ""
     },
-    username: {
+    username: { // Username
         type: String,
         required: true
     },
-    password: {
+    password: { // Password
         type: String,
         required: true
     },
-    lastFailedLoginTime: {
+    lastFailedLoginTime: { // Time of last failed login attempt
         type: Date,
         default: Date.now
     },
-    failedLoginAttempts: {
+    failedLoginAttempts: { // # of failed login attempts
         type: Number,
         default: 0
     },
-    expirationDate: {
+    expirationDate: { // When a locked account will unlock
         type: Date,
         default: Date.now
     },
+    moviesWatched: { // How many movies the user has watched today
+      type: Number,
+      default: 0
+    }
 
     //TODO: PROFILES
+    //Possibly an array of profile objects?
 
 }, {timestamps: true});
 

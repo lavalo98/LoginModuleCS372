@@ -223,9 +223,10 @@ app.post('/', urlencodedParser, (req, res) => {
         console.log(passwordInput);
         console.log(user.password);
 
-        var success = bcrypt.compareSync(passwordInput, user.password);
-        console.log(success);
-        if(dateTime >= user.expirationDate){
+        if(dateTime >= user.expirationDate) {
+          var success = bcrypt.compareSync(passwordInput, user.password);
+          console.log(success);
+
           if(success) {
             Login.findOneAndUpdate({'username' : user.username}, {'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}

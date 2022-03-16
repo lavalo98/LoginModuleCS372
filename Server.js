@@ -181,7 +181,10 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
 
        login.save()
          .then((result) => {
-          res.send(result);
+          //res.send(result);
+          console.log("Successfully handled registration of a new user:");
+          console.log(result);
+          console.log("");
          })
          .catch((err) => {
            console.log(err);

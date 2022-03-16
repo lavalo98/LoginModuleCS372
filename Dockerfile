@@ -18,6 +18,8 @@ RUN npm install mongoose
 RUN npm install bootstrap
 RUN npm install bcrypt
 RUN npm install pug
+RUN npm install cookie-parser
+RUN npm install sessions
 RUN apt clean
 
 # Change current working directory inside the image

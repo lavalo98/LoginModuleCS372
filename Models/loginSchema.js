@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const loginSchema = new mongoose.Schema({
+    email: {
+      type: String,
+      required: false,
+      default: ""
+    },
     username: {
         type: String,
         required: true
@@ -22,6 +27,9 @@ const loginSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+
+    //TODO: PROFILES
+
 }, {timestamps: true});
 
 const Login = mongoose.model('Login', loginSchema);

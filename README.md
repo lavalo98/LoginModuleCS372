@@ -1,6 +1,6 @@
 # LoginModuleCS372
 
-Developed for CS372 Software Construction Project 1 by Luis Avalo and Darian Marvel
+Developed for CS372 Software Construction Projects 1 and 2 by Luis Avalo and Darian Marvel
 
 ## Building and Running Instructions
 

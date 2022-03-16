@@ -224,6 +224,9 @@ app.post('/', urlencodedParser, (req, res) => {
         console.log(user.password);
 
         if(dateTime >= user.expirationDate) {
+          //Compare hashed password after checking for account locked
+          //as a small optimization to prevent repeated attempts on a locked account
+          //from slowing down the server since hashing may be slow
           var success = bcrypt.compareSync(passwordInput, user.password);
           console.log(success);
 

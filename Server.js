@@ -210,6 +210,8 @@ app.post('/', urlencodedParser, (req, res) => {
   Login.find({"username" : usernameInput})
     .then((result) => {
 
+      console.log('Handling login attempt of user ' + usernameInput);
+
       console.log('Response on querying database for user ' + usernameInput);
       console.log('');
       console.log(result);

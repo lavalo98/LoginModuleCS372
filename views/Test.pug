@@ -2,7 +2,7 @@ doctype html
 html
   head
     style.
-        .grid { 
+        .grid {
             width: 90%;
             text-align: center;
             margin: 0 auto;
@@ -12,6 +12,7 @@ html
             justify-content: center;
             flex-wrap: wrap;
             border: 2px solid black;
+            padding: 0 30px;
         }
 
         .grid div {
@@ -51,5 +52,5 @@ html
     h1 Movie Homepage
     .grid
         for movie, i in movieNameArray
-            div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;") 
+            div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
                 div #{movie + " (" + releaseYearArray[i] + ")"}

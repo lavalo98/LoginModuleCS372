@@ -54,7 +54,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 
 app.use(session({
-  store: MongoStore.create({ mongoUrl: dbURI })
+  store: MongoStore.create({ mongoUrl: dbURI }),
+  secret: 'averyverysecretsecret'
 }));
 
 //A page that lists all user data in the database

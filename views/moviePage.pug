@@ -62,5 +62,6 @@ html
             span.year #{releaseYear}
             span.time #{runtime} mins
             span.rating #{rating}
-            span.genre #{category}
+            for cat, i in category
+                span.genre #{cat}
             div.description #{description}

@@ -83,10 +83,10 @@ app.get('/moviePage', (req, res) => {
 });
 
 app.get('/show-movie', (req, res) => {
-  var product_query = decodeURI(req._parsedUrl.query);
-  console.log(product_query);
+  var movie_query = decodeURI(req._parsedUrl.query);
+  console.log(movie_query);
 
-  Movie.find({"movieName" : product_query})
+  Movie.find({"movieName" : movie_query})
     .then((result) => {
       console.log(result);
 

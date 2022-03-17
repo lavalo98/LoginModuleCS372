@@ -82,7 +82,30 @@ app.get('/moviePage', (req, res) => {
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
-app.get('/testing', (req, res) => {
+app.get('/show-movie', (req, res) => {
+  var product_query = decodeURI(req._parsedUrl.query);
+  console.log(product_query);
+
+  Movie.find({"movieName" : product_query})
+    .then((result) => {
+      console.log(result);
+
+      return res.render("moviePage", {
+        movieName : result[0].movieName, 
+        releaseYear : result[0].releaseYear, 
+        description : result[0].description, 
+        movieImageName : result[0].movieImageName, 
+        rating : result[0].rating, 
+        runtime : result[0].runtime,
+        category : result[0].category
+        });
+  })
+  .catch((err) => {
+     console.log(err);
+   })
+});
+
+app.get('/home', (req, res) => {
   var movieNameArray = new Array();
   var movieImageArray = new Array();
   var releaseYearArray = new Array();

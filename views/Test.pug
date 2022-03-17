@@ -50,6 +50,7 @@ html
 
   body
     h1 Movie Homepage
+    h2 Welcome, #{username}!
     .grid
         for movie, i in movieNameArray
             div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")

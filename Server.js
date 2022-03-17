@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const path = require('path');
 var bodyParser = require('body-parser');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const session = require('express-session'); // Documentation: https://www.npmjs.com/package/express-session
+const MongoStore = require('connect-mongo'); // Documentation: https://www.npmjs.com/package/connect-mongo
 
 // Database Information
 const Login = require('./Models/loginSchema');
@@ -54,8 +54,9 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 
 app.use(session({
-  store: MongoStore.create({ mongoUrl: dbURI }),
-  secret: 'averyverysecretsecret'
+  store: MongoStore.create({ mongoUrl: dbURI }), // Create a MongoDB cookie store at the same dbURI
+  secret: 'averyverysecretsecret', // Key for managing cookie data stored in MongoDB
+  ttl: 24 * 60 * 60 // Set cookie expiration to 1 day
 }));
 
 //A page that lists all user data in the database
@@ -85,6 +86,14 @@ app.get('/addmovie', (req, res) => {
 });
 
 app.get('/testing', (req, res) => {
+
+  // If user is not logged in with a valid session cookie, reject them
+  if(!req.session.username) {
+    res.setHeader('Content-Type', 'text/html');
+    res.write('<p> Hey you, you\'re not signed in! </p>');
+    res.end();
+  }
+
   var movieNameArray = new Array();
   var movieImageArray = new Array();
   var releaseYearArray = new Array();
@@ -100,7 +109,7 @@ app.get('/testing', (req, res) => {
       result.forEach((movieName) => {
         releaseYearArray.push(movieName.releaseYear);
       })
-      res.render("Test", {movieNameArray, movieImageArray, releaseYearArray});
+      res.render("Test", {movieNameArray, movieImageArray, releaseYearArray, username});
   })
   .catch((err) => {
      console.log(err);

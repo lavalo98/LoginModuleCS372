@@ -19,6 +19,10 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    movieFileName:{
+      type: String,
+      required: false // TODO: Make this true when it all works
+    },
     rating: {
         type: String,
         required: true
@@ -32,7 +36,7 @@ const movieSchema = new mongoose.Schema({
         required: true
     },
     likes: {
-        type: Number,   
+        type: Number,
         default: 0
     },
 }, {timestamps: true});

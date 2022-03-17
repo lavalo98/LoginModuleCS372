@@ -96,7 +96,6 @@ app.get('/testing', (req, res) => {
 
   console.log(req.session);
   if(!req.session.username) {
-    res.setHeader('Content-Type', 'text/html');
     res.write('<p> Hey you, you\'re not signed in! </p>');
     res.end();
   }
@@ -276,6 +275,9 @@ app.post('/', urlencodedParser, (req, res) => {
               if(err){console.log("Generating session on login FAILED");}
               else {
                 req.session.username = user.username;
+                var hours = 1000 * 60 * 60 * 24;
+                req.session.cookie.expires = new Date(Date.now() + hours)
+                req.session.cookie.maxAge = hours
                 console.log("Successfully opened a session for user " + req.session.username);
               }
             })

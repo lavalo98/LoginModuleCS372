@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const path = require('path');
 var bodyParser = require('body-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 // Database Information
 const Login = require('./Models/loginSchema');
@@ -50,6 +52,10 @@ try {
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(80))
   .catch(err => console.log(err));
+
+app.use(session({
+  store: MongoStore.create({ mongoUrl: dbURI })
+}));
 
 //A page that lists all user data in the database
 app.get('/all-users', (req, res) => {

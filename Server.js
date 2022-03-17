@@ -110,6 +110,7 @@ app.post('/movie-addition', urlencodedParser, (req, res) => {
   var releaseYear = req.body.releaseYear;
   var description = req.body.description;
   var movieImageName = req.body.movieImageName;
+  var movieFileName = req.body.movieFileName;
   var rating = req.body.rating;
   var runtime = req.body.runtime;
   var category = req.body.category;

@@ -77,11 +77,6 @@ app.get('/addmovie', (req, res) => {
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
-app.get('/moviePage', (req, res) => {
-  res.render("moviePage");
-  //res.sendFile(__dirname + '/LoginPage.html');
-});
-
 app.get('/testing', (req, res) => {
   var movieNameArray = new Array();
   var movieImageArray = new Array();

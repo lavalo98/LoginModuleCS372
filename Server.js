@@ -253,6 +253,16 @@ app.post('/', urlencodedParser, (req, res) => {
             Login.findOneAndUpdate({'username' : user.username}, {'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
             });
+
+            // Create a session
+            req.session.regenerate(function(err) {
+              if(err){console.log("Generating session on login FAILED");}
+              else {
+                req.session.username = user.username;
+                console.log("Successfully opened a session for user " + req.session.username);
+              }
+            })
+
             res.render("Home", { username: user.username});
           }else {
             if(user.failedLoginAttempts >= 4){

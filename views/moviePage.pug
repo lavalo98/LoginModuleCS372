@@ -21,9 +21,6 @@ html
             width: 15%;
             min-width: 300px;
             height: 450px;
-            background: url('images/dragonballz.jpg'); 
-            background-repeat: no-repeat; 
-            background-size: cover;
             grid-column-start: 1;
             grid-row-start: 1;
             grid-row-end: 6;
@@ -59,11 +56,11 @@ html
   body
     h1 Movie Homepage
     .grid
-        div.movieImageDiv 
-        div.movieTitleDiv Dragon Ball Z
+        div.movieImageDiv(style= "background: url(images/" + movieImageName + "); background-repeat: no-repeat; background-size: cover;")
+        div.movieTitleDiv #{movieName}
         div.movieRatingDiv 
-            span.year 1989
-            span.time 24 mins 
-            span.rating PG-13
-            span.genre Action
-            div.description "Dragon Ball Z" follows the adventures of Goku who, along with the Z Warriors, defends the Earth against evil. The action adventures are entertaining and reinforce the concept of good versus evil. "Dragon Ball Z" teaches valuable character virtues such as teamwork, loyalty, and trustworthiness.
+            span.year #{releaseYear}
+            span.time #{runtime}
+            span.rating #{rating}
+            span.genre #{category}
+            div.description #{description}

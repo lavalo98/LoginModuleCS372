@@ -1,0 +1,67 @@
+doctype html
+html
+  head
+    style.
+        .grid { 
+            font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+            width: 50%;
+            padding: 10px;
+            display: grid;
+            background-color: #7393B3;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-auto-rows: 100px;
+        }
+
+        .grid div {
+            /*border: 2px solid black;*/
+            margin: 10px;
+        }
+
+        .movieImageDiv{
+            width: 15%;
+            min-width: 300px;
+            height: 450px;
+            grid-column-start: 1;
+            grid-row-start: 1;
+            grid-row-end: 6;
+        }
+
+        .movieTitleDiv{
+            font-size: 40px;
+            padding: 5px;
+            grid-column-start: 2;
+            grid-column-end: 4;
+            grid-row-start: 1;
+            grid-row-end: 2;
+        }
+
+        .movieRatingDiv{
+            grid-column-start: 2;
+            grid-column-end: 4;
+            grid-row-start: 2;
+            grid-row-end: 5;
+        }
+
+        .rating, .year, .genre, .time {
+            color: fff;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 15px;
+        }
+
+        .description{
+            margin: 10px;
+        }
+
+  body
+    h1 Movie Homepage
+    .grid
+        div.movieImageDiv(style= "background: url(images/" + movieImageName + "); background-repeat: no-repeat; background-size: cover;")
+        div.movieTitleDiv #{movieName}
+        div.movieRatingDiv 
+            span.year #{releaseYear}
+            span.time #{runtime} mins
+            span.rating #{rating}
+            for cat, i in category
+                span.genre #{cat}
+            div.description #{description}

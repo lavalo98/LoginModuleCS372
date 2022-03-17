@@ -280,6 +280,11 @@ app.post('/', urlencodedParser, (req, res) => {
               }
             })
 
+            // Save the session
+            req.session.save(function(err) {
+              if(err) console.log("Could not SAVE session of user " + user.username);
+            })
+
             res.render("Home", { username: user.username});
           }else {
             if(user.failedLoginAttempts >= 4){

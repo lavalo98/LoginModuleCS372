@@ -114,19 +114,27 @@ app.post('/movie-addition', urlencodedParser, (req, res) => {
   var runtime = req.body.runtime;
   var category = req.body.category;
 
+  console.log("Received new movie information:");
+  console.log("");
+
   console.log(movieName);
   console.log(releaseYear);
   console.log(description);
   console.log(movieImageName);
+  console.log(movieFileName);
   console.log(rating);
   console.log(runtime + " mins");
   console.log(category);
+
+  console.log("");
+  console.log("");
 
   const movie = new Movie({
     movieName: movieName,
     releaseYear: releaseYear,
     description: description,
     movieImageName: movieImageName,
+    movieFileName: movieFileName,
     rating: rating,
     runtime: runtime,
     category: category
@@ -134,6 +142,8 @@ app.post('/movie-addition', urlencodedParser, (req, res) => {
 
   movie.save()
       .then((result) => {
+        console.log("Movie JSON data:");
+        console.log("");
         console.log(result);
       })
       .catch((err) => {

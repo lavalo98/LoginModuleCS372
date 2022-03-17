@@ -57,7 +57,9 @@ app.use(session({
   store: MongoStore.create({ mongoUrl: dbURI }), // Create a MongoDB cookie store at the same dbURI
   secret: 'averyverysecretsecret', // Key for managing cookie data stored in MongoDB
   ttl: 24 * 60 * 60, // Set cookie expiration to 1 day
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 60000 },
+  resave: true,
+  saveUninitialized: true
 }));
 
 //A page that lists all user data in the database

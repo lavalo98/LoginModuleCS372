@@ -88,6 +88,7 @@ app.get('/addmovie', (req, res) => {
 app.get('/testing', (req, res) => {
 
   // If user is not logged in with a valid session cookie, reject them
+  console.log(req.session);
   if(!req.session.username) {
     res.setHeader('Content-Type', 'text/html');
     res.write('<p> Hey you, you\'re not signed in! </p>');
@@ -97,6 +98,7 @@ app.get('/testing', (req, res) => {
   var movieNameArray = new Array();
   var movieImageArray = new Array();
   var releaseYearArray = new Array();
+  var username = req.session.username;
 
   Movie.find({})
     .then((result) => {

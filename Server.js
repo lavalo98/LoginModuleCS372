@@ -54,12 +54,15 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 
 app.use(session({
-  store: MongoStore.create({ mongoUrl: dbURI }), // Create a MongoDB cookie store at the same dbURI
+  store: MongoStore.create({
+    mongoUrl: dbURI,
+    ttl: 24 * 60 * 60, // Set cookie expiration to 1 day
+    stringify: false,
+  }), // Create a MongoDB cookie store at the same dbURI
   secret: 'averyverysecretsecret', // Key for managing cookie data stored in MongoDB
-  ttl: 24 * 60 * 60, // Set cookie expiration to 1 day
-  cookie: { maxAge: 60000 },
+  cookie: { secure: false, httpOnly: false, expires: new Date(Date.now() + 9999999), sameSite: true },
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
 }));
 
 //A page that lists all user data in the database
@@ -279,9 +282,6 @@ app.post('/', urlencodedParser, (req, res) => {
               if(err){console.log("Generating session on login FAILED");}
               else {
                 req.session.username = user.username;
-                var hours = 1000 * 60 * 60 * 24;
-                req.session.cookie.expires = new Date(Date.now() + hours)
-                req.session.cookie.maxAge = hours
                 console.log("Successfully opened a session for user " + req.session.username);
               }
             })

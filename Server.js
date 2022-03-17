@@ -88,6 +88,12 @@ app.get('/addmovie', (req, res) => {
 app.get('/testing', (req, res) => {
 
   // If user is not logged in with a valid session cookie, reject them
+
+  req.session.reload(function(err) {
+    // session updated
+    if(err) console.log("Could not load session of user!");
+  })
+
   console.log(req.session);
   if(!req.session.username) {
     res.setHeader('Content-Type', 'text/html');

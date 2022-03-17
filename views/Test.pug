@@ -14,7 +14,7 @@ html
             border: 2px solid black;
         }
 
-        .grid button {
+        .grid div {
             cursor: pointer;
             border: none;
             box-shadow: 0px 5px 5px rgb(10, 10, 10, .45);
@@ -26,24 +26,25 @@ html
             position:relative;
         }
 
-        .grid button div {
+        .grid div div {
             width: 100%;
             position:absolute;
+            margin: 0 auto;
             bottom: 0;
-            left: 0;
             height: fit-content;
             text-align: center;
             background-color: rgb(10, 10, 10, .45);
             visibility: hidden;
         }
 
-        .grid button:hover {
+        .grid div:hover {
             transform: scale(1.2);
             z-index: 1;
         }
 
-        .grid button:hover > div {
+        .grid div:hover > div {
             visibility: visible;
+            transform: scale(1);
         }
 
         #movieData{
@@ -53,5 +54,6 @@ html
     h1 Movie Homepage
     .grid
         for movie, i in movieNameArray
-            button#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;") 
-                div #{movie + " (" + releaseYearArray[i] + ")"}
+            a(href= "show-movie?" + movie)
+                div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;") 
+                    div #{movie + " (" + releaseYearArray[i] + ")"}

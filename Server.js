@@ -56,7 +56,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(session({
   store: MongoStore.create({ mongoUrl: dbURI }), // Create a MongoDB cookie store at the same dbURI
   secret: 'averyverysecretsecret', // Key for managing cookie data stored in MongoDB
-  ttl: 24 * 60 * 60 // Set cookie expiration to 1 day
+  ttl: 24 * 60 * 60, // Set cookie expiration to 1 day
+  cookie: { maxAge: 60000 }
 }));
 
 //A page that lists all user data in the database
@@ -92,6 +93,7 @@ app.get('/testing', (req, res) => {
   req.session.reload(function(err) {
     // session updated
     if(err) console.log("Could not load session of user!");
+    else console.log(req.session.username);
   })
 
   console.log(req.session);

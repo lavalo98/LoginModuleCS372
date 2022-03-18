@@ -87,8 +87,6 @@ app.get('/all-users', (req, res) => {
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-
-
 app.get('/', (req, res) => {
   return res.render("login", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
@@ -313,6 +311,7 @@ app.post('/', urlencodedParser, (req, res) => {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
             });
 
+            /*
             // Create a session
             req.session.regenerate(function(err) {
               if(err){console.log("Generating session on login FAILED");}
@@ -321,11 +320,16 @@ app.post('/', urlencodedParser, (req, res) => {
                 console.log("Successfully opened a session for user " + req.session.username);
               }
             })
+            */
 
+            req.session.username = user.username;
+
+            /*
             // Save the session
             req.session.save(function(err) {
               if(err) console.log("Could not SAVE session of user " + user.username);
             })
+            */
 
             return res.render("Home", { username: user.username});
           }else {

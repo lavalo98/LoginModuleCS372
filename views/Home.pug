@@ -1,4 +1,5 @@
 doctype html
+include navBar.pug
 html
   head
     style.
@@ -6,6 +7,7 @@ html
             width: 90%;
             text-align: center;
             margin: 0 auto;
+            margin-top: 30px;
             display: flex;
             font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
             font-weight: 500;
@@ -52,10 +54,10 @@ html
             color: white;
         }
   body
-    h1 Movie Homepage
-    h2 Welcome, #{username}!
+    +navBarSend(username)
     .grid
         for movie, i in movieNameArray
             a(href= "show-movie?" + movie)
                 div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
                     div #{movie + " (" + releaseYearArray[i] + ")"}
+  include footer.pug

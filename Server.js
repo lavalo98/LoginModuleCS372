@@ -256,6 +256,11 @@ app.get('/home', (req, res) => {
    })
 });
 
+app.get('/register', (req, res) => {
+  return res.render("registration", {alertShow: ""})
+  //res.sendFile(__dirname + '/RegisterPage.html');
+});
+
 app.post('/register', (req, res) => {
   return res.render("registration", {alertShow: ""})
   //res.sendFile(__dirname + '/RegisterPage.html');

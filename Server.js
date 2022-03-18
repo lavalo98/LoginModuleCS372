@@ -187,6 +187,34 @@ app.get('/show-movie', (req, res) => {
   })
 });
 
+app.get('/category', (req, res) => {
+  var category_query = decodeURI(req._parsedUrl.query);
+  var movieNameArray = new Array();
+  var movieImageArray = new Array();
+  var releaseYearArray = new Array();
+  var username = req.session.username;
+  console.log(category_query);
+
+  Movie.find({"category" : category_query})
+  .then((result) => {
+    console.log(result);
+    result = shuffleArray(result);
+      result.forEach((movieName) => {
+        movieNameArray.push(movieName.movieName);
+      })
+      result.forEach((movieName) => {
+        movieImageArray.push(movieName.movieImageName);
+      })
+      result.forEach((movieName) => {
+        releaseYearArray.push(movieName.releaseYear);
+      })
+      return res.render("categoryType", {movieNameArray, movieImageArray, releaseYearArray, username});
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+});
+
 app.get('/home', (req, res) => {
 
   // If user is not logged in with a valid session cookie, reject them
@@ -395,7 +423,7 @@ app.post('/', urlencodedParser, (req, res) => {
                 result.forEach((movieName) => {
                   releaseYearArray.push(movieName.releaseYear);
                 })
-                return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username});
+                return res.redirect('/home');
             })
             .catch((err) => {
                console.log(err);

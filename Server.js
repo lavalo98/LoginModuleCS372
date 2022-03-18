@@ -229,8 +229,7 @@ app.get('/home', (req, res) => {
 
   console.log(req.session);
   if(!req.session.username) {
-    res.write('<p> Hey you, you\'re not signed in! </p>');
-    return res.end();
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
   var movieNameArray = new Array();

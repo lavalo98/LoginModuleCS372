@@ -2,10 +2,10 @@ doctype html
 html
   head
     style.
-        .grid { 
+        .grid {
             font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
             width: 50%;
-            padding: 10px;
+            padding: 30px;
             display: grid;
             background-color: #7393B3;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -27,7 +27,7 @@ html
         }
 
         .movieTitleDiv{
-            font-size: 40px;
+            font-size: 35px;
             padding: 5px;
             grid-column-start: 2;
             grid-column-end: 4;
@@ -50,7 +50,7 @@ html
         }
 
         .description{
-            margin: 10px;
+            margin: 15px;
         }
 
   body
@@ -58,7 +58,7 @@ html
     .grid
         div.movieImageDiv(style= "background: url(images/" + movieImageName + "); background-repeat: no-repeat; background-size: cover;")
         div.movieTitleDiv #{movieName}
-        div.movieRatingDiv 
+        div.movieRatingDiv
             span.year #{releaseYear}
             span.time #{runtime} mins
             span.rating #{rating}

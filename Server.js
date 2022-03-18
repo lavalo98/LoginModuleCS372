@@ -87,9 +87,61 @@ app.get('/all-users', (req, res) => {
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+// Function to shuffle the array content
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+
+      // Generate random number
+      var j = Math.floor(Math.random() * (i + 1));
+
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+
+  return array;
+}
+
 app.get('/', (req, res) => {
   return res.render("login", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
+});
+
+app.get('/video', (req, res) => {
+  // Ensure there is a range given for the video
+  range = req.headers.range;
+  if (!range) {
+    range = 'bytes=0-';
+  }
+  
+  // get video stats 
+  const videoPath = "Videos/Sensory.mp4";
+  const videoSize = fs.statSync(videoPath).size;
+  
+  // Parse Range
+  // Example: "bytes=32324-"
+  const CHUNK_SIZE = 10 ** 6; // 1MB
+  const start = Number(range.replace(/\D/g, ""));
+  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+  
+  // Create headers
+  const contentLength = end - start + 1;
+  const headers = {
+    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": contentLength,
+    "Content-Type": "video/mp4",
+  };
+  
+  // HTTP Status 206 for Partial Content
+  res.writeHead(206, headers);
+  
+  // create video read stream for this particular chunk
+  const videoStream = fs.createReadStream(videoPath, { start, end });
+  
+  // Stream the video chunk to the client
+  videoStream.pipe(res);
+  
 });
 
 app.get('/addmovie', (req, res) => {
@@ -148,6 +200,7 @@ app.get('/home', (req, res) => {
 
   Movie.find({})
     .then((result) => {
+      result = shuffleArray(result);
       result.forEach((movieName) => {
         movieNameArray.push(movieName.movieName);
       })

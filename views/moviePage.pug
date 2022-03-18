@@ -57,10 +57,17 @@ html
             padding: 3px;
             margin: 5px;
         }
+
+        .playBtn{
+            height: 30px;
+            width: 100px;
+        }
   body
     h1 Movie Homepage
     .grid
         div.movieImageDiv(style= "background: url(images/" + movieImageName + "); background-repeat: no-repeat; background-size: cover;")
+        a(href= "play-movie?" + movieName)
+            button.playBtn Play
         div.movieTitleDiv #{movieName}
         div.movieRatingDiv
             span.year #{releaseYear}

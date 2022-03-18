@@ -20,9 +20,9 @@ mixin navBarSend(user)
             #navbarSupportedContent.collapse.navbar-collapse
                 ul.navbar-nav.mr-auto
                     li.nav-item.active
-                        a.nav-link(href='#')
+                        a.nav-link(href='home')
                             | Home 
-                            span.sr-only (current)
+                            span.sr-only
                     li.nav-item.dropdown
                         a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                             | Category
@@ -42,5 +42,5 @@ mixin navBarSend(user)
                             a.dropdown-item(href='category?Western') Western
                 form.form-inline.my-2.my-lg-0
                     h3#username.my-2.my-sm-0 User: #{username}
-                    input.form-control.mr-sm-2(type='search' placeholder='Search' aria-label='Search')
+                    input.form-control.mr-sm-2(type='search' name='search' placeholder='Search for movies' aria-label='Search')
                     button.btn.btn-outline-primary.my-2.my-sm-0.customButtonText(type='submit') Search

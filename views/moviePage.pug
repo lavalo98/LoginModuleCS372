@@ -53,6 +53,10 @@ html
             margin: 15px;
         }
 
+        .genre{
+            padding: 3px;
+            margin: 5px;
+        }
   body
     h1 Movie Homepage
     .grid
@@ -62,6 +66,8 @@ html
             span.year #{releaseYear}
             span.time #{runtime} mins
             span.rating #{rating}
+            br
+            br
             for cat, i in category
                 span.genre #{cat}
             div.description #{description}

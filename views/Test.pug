@@ -1,20 +1,17 @@
 doctype html
-include navBar.pug
 html
   head
     style.
-        .grid {
+        .grid { 
             width: 90%;
             text-align: center;
             margin: 0 auto;
-            margin-top: 30px;
             display: flex;
             font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
             font-weight: 500;
             justify-content: center;
             flex-wrap: wrap;
             border: 2px solid black;
-            padding: 0 30px;
         }
 
         .grid div {
@@ -41,7 +38,7 @@ html
         }
 
         .grid div:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
             z-index: 1;
         }
 
@@ -53,11 +50,12 @@ html
         #movieData{
             color: white;
         }
+  include navBar.pug(username)
   body
-    +navBarSend(username)
+    br
+    br
     .grid
         for movie, i in movieNameArray
             a(href= "show-movie?" + movie)
-                div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
+                div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;") 
                     div #{movie + " (" + releaseYearArray[i] + ")"}
-  include footer.pug

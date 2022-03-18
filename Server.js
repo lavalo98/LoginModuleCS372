@@ -157,7 +157,7 @@ app.get('/home', (req, res) => {
       result.forEach((movieName) => {
         releaseYearArray.push(movieName.releaseYear);
       })
-      return res.render("Test", {movieNameArray, movieImageArray, releaseYearArray, username});
+      return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username});
   })
   .catch((err) => {
      console.log(err);

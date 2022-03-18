@@ -18,6 +18,14 @@ const { Console } = require('console');
 // Web Server
 const app = express();
 
+// Send headers so cookies work
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Currently hard-coded list of movies, will either be in database or filesystem later
 const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper",
                    "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman",
@@ -60,7 +68,7 @@ app.use(session({
     stringify: false,
   }), // Create a MongoDB cookie store at the same dbURI
   secret: 'averyverysecretsecret', // Key for managing cookie data stored in MongoDB
-  cookie: { secure: false, httpOnly: false, expires: new Date(Date.now() + 9999999), sameSite: true },
+  cookie: { secure: false, httpOnly: false, expires: new Date(Date.now() + 9999999), sameSite: 'lax' },
   resave: true,
   saveUninitialized: true,
 }));
@@ -69,11 +77,11 @@ app.use(session({
 app.get('/all-users', (req, res) => {
   Login.find()
     .then((result) => {
-      res.send(result);
+      return res.send(result);
     })
     .catch((err) => {
       console.log(err);
-      res.send(err);
+      return res.send(err);
     })
 });
 
@@ -82,17 +90,17 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 app.get('/', (req, res) => {
-  res.render("login", {alertShow: ""});
+  return res.render("login", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.get('/addmovie', (req, res) => {
-  res.render("AddMovies", {alertShow: ""});
+  return res.render("AddMovies", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.get('/moviePage', (req, res) => {
-    res.render("moviePage");
+    return res.render("moviePage");
     //res.sendFile(__dirname + '/LoginPage.html');
   });
 
@@ -132,7 +140,7 @@ app.get('/home', (req, res) => {
   console.log(req.session);
   if(!req.session.username) {
     res.write('<p> Hey you, you\'re not signed in! </p>');
-    res.end();
+    return res.end();
   }
 
   var movieNameArray = new Array();
@@ -151,7 +159,7 @@ app.get('/home', (req, res) => {
       result.forEach((movieName) => {
         releaseYearArray.push(movieName.releaseYear);
       })
-      res.render("Test", {movieNameArray, movieImageArray, releaseYearArray, username});
+      return res.render("Test", {movieNameArray, movieImageArray, releaseYearArray, username});
   })
   .catch((err) => {
      console.log(err);
@@ -159,7 +167,7 @@ app.get('/home', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  res.render("registration", {alertShow: ""})
+  return res.render("registration", {alertShow: ""})
   //res.sendFile(__dirname + '/RegisterPage.html');
 });
 
@@ -319,7 +327,7 @@ app.post('/', urlencodedParser, (req, res) => {
               if(err) console.log("Could not SAVE session of user " + user.username);
             })
 
-            res.render("Home", { username: user.username});
+            return res.render("Home", { username: user.username});
           }else {
             if(user.failedLoginAttempts >= 4){
               Login.findOneAndUpdate({'username' : user.username}, {'expirationDate' : dateTimePlus24, 'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {
@@ -330,14 +338,14 @@ app.post('/', urlencodedParser, (req, res) => {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
             });
             console.log("Username and/or password combination do not match database");
-            res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
+            return res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
           }
         }else{
           return res.render("login", {alertShow: "show", header: "Account LOCKED", message: "You have exceeded 5 attempts, account locked for 1 hour!"});
         }
       }else{
         console.log("Username and/or password combination do not match database");
-        res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
+        return res.render("login", {alertShow: "show", header: "Login Failed!", message: "Username and password combination does not match any in database"});
       }
     })
     .catch((err) => {

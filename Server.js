@@ -311,27 +311,32 @@ app.post('/', urlencodedParser, (req, res) => {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
             });
 
-            /*
-            // Create a session
-            req.session.regenerate(function(err) {
-              if(err){console.log("Generating session on login FAILED");}
-              else {
-                req.session.username = user.username;
-                console.log("Successfully opened a session for user " + req.session.username);
-              }
-            })
-            */
-
+            // Set username in cookie
             req.session.username = user.username;
 
-            /*
-            // Save the session
-            req.session.save(function(err) {
-              if(err) console.log("Could not SAVE session of user " + user.username);
-            })
-            */
+            // Copy Paste from above, for now...
 
-            return res.render("Home", { username: user.username});
+            var movieNameArray = new Array();
+            var movieImageArray = new Array();
+            var releaseYearArray = new Array();
+            var username = req.session.username;
+
+            Movie.find({})
+              .then((result) => {
+                result.forEach((movieName) => {
+                  movieNameArray.push(movieName.movieName);
+                })
+                result.forEach((movieName) => {
+                  movieImageArray.push(movieName.movieImageName);
+                })
+                result.forEach((movieName) => {
+                  releaseYearArray.push(movieName.releaseYear);
+                })
+                return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username});
+            })
+            .catch((err) => {
+               console.log(err);
+             })
           }else {
             if(user.failedLoginAttempts >= 4){
               Login.findOneAndUpdate({'username' : user.username}, {'expirationDate' : dateTimePlus24, 'failedLoginAttempts' : 0}, {upsert: true}, function(err, doc) {

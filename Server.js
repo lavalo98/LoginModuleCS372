@@ -115,7 +115,7 @@ app.get('/video', (req, res) => {
   }
   
   // get video stats 
-  const videoPath = "Videos/Sensory.mp4";
+  const videoPath = "public/videos/Sensory.mp4";
   const videoSize = fs.statSync(videoPath).size;
   
   // Parse Range

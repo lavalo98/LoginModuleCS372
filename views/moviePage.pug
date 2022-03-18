@@ -38,10 +38,7 @@ html
 
         .rating, .year, .time {
             padding: 5px;
-            color: white;
-            border-radius: 10px;
-            margin-right: 10px;
-            background-color: rgb(52,58,64);
+            
         }
 
         
@@ -52,6 +49,11 @@ html
 
         .genre{
             padding: 5px;
+            color: white;
+            border-radius: 10px;
+            margin-right: 10px;
+            background-color: rgb(52,58,64);
+            text-align: center;
         }
 
         .playBtn{
@@ -98,16 +100,13 @@ html
                     button.playBtn Play
                 br
                 br
-                span.year #{releaseYear}
-                span.time #{runtime} mins
+                span.year #{releaseYear} |
+                span.time #{runtime} mins |
                 span.rating #{rating}
                 br
                 br
                 for cat, i in category
-                    if(i != category.length - 1)
-                        span.genre #{cat} |
-                    else
-                        span.genre #{cat}
+                    span.genre #{cat} 
                 br
                 br
                 span.description #{description}

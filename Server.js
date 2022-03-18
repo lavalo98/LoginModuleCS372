@@ -166,6 +166,7 @@ app.get('/moviePage', (req, res) => {
 
 app.get('/show-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
+  var username = req.session.username;
   console.log(movie_query);
 
   Movie.find({"movieName" : movie_query})
@@ -179,7 +180,8 @@ app.get('/show-movie', (req, res) => {
       movieImageName : result[0].movieImageName,
       rating : result[0].rating,
       runtime : result[0].runtime,
-      category : result[0].category
+      category : result[0].category,
+      username : username
     });
   })
   .catch((err) => {

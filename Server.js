@@ -14,6 +14,7 @@ const Login = require('./Models/loginSchema');
 const Movie = require('./Models/movieSchema');
 const { db } = require('./Models/loginSchema');
 const { Console } = require('console');
+const text = require('body-parser/lib/types/text');
 
 // Web Server
 const app = express();
@@ -25,12 +26,6 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-// Currently hard-coded list of movies, will either be in database or filesystem later
-const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper",
-                   "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman",
-                   "Avengers", "Dragon Ball Z", "Dragonball Super", "Dragon Ball", "Dragon Ball GT",
-                   "First Reformed", "Zama", "Transformers"];
 
 //Set pug as view engine, "views" as location for .pug files
 app.set("view engine", "pug");
@@ -107,41 +102,88 @@ app.get('/', (req, res) => {
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
-app.get('/video', (req, res) => {
-  // Ensure there is a range given for the video
-  range = req.headers.range;
-  if (!range) {
-    range = 'bytes=0-';
+app.get('/search', (req, res) =>{
+  var search_query = req.query.search;
+  var movieNameArray = new Array();
+  var movieImageArray = new Array();
+  var releaseYearArray = new Array();
+  var username = req.session.username;
+  console.log("What you searched for: "+ search_query);
+
+  if(search_query){
+    var movieNameArray = new Array();
+    var movieImageArray = new Array();
+    var releaseYearArray = new Array();
+    var username = req.session.username;
+    const regex = new RegExp(escapeRegex(search_query), 'gi');
+
+    Movie.find({"movieName" : regex})
+      .then((result) => {
+        result = shuffleArray(result);
+        result.forEach((movieName) => {
+          movieNameArray.push(movieName.movieName);
+        })
+        result.forEach((movieName) => {
+          movieImageArray.push(movieName.movieImageName);
+        })
+        result.forEach((movieName) => {
+          releaseYearArray.push(movieName.releaseYear);
+        })
+        return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : result.length});
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }else{
+    return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : 0});
   }
-  
-  // get video stats 
-  const videoPath = "public/videos/Sensory.mp4";
-  const videoSize = fs.statSync(videoPath).size;
-  
-  // Parse Range
-  // Example: "bytes=32324-"
-  const CHUNK_SIZE = 10 ** 6; // 1MB
-  const start = Number(range.replace(/\D/g, ""));
-  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-  
-  // Create headers
-  const contentLength = end - start + 1;
-  const headers = {
-    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-    "Accept-Ranges": "bytes",
-    "Content-Length": contentLength,
-    "Content-Type": "video/mp4",
-  };
-  
-  // HTTP Status 206 for Partial Content
-  res.writeHead(206, headers);
-  
-  // create video read stream for this particular chunk
-  const videoStream = fs.createReadStream(videoPath, { start, end });
-  
-  // Stream the video chunk to the client
-  videoStream.pipe(res);
-  
+})
+
+app.get('/play-movie', (req, res) => {
+  var movie_query = decodeURI(req._parsedUrl.query);
+
+  Movie.find({"movieName" : movie_query})
+  .then((result) => {
+    console.log(result[0].movieFileName);
+
+    // Ensure there is a range given for the video
+    range = req.headers.range;
+    if (!range) {
+      range = 'bytes=0-';
+    }
+    
+    // get video stats 
+    const videoPath = "public/videos/" + result[0].movieFileName;
+    const videoSize = fs.statSync(videoPath).size;
+    
+    // Parse Range
+    // Example: "bytes=32324-"
+    const CHUNK_SIZE = 10 ** 6; // 1MB
+    const start = Number(range.replace(/\D/g, ""));
+    const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+    
+    // Create headers
+    const contentLength = end - start + 1;
+    const headers = {
+      "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": contentLength,
+      "Content-Type": "video/mp4",
+    };
+    
+    // HTTP Status 206 for Partial Content
+    res.writeHead(206, headers);
+    
+    // create video read stream for this particular chunk
+    const videoStream = fs.createReadStream(videoPath, { start, end });
+    
+    // Stream the video chunk to the client
+    videoStream.pipe(res);
+
+  })
+  .catch((err) => {
+    console.log(err);
+  })  
 });
 
 app.get('/addmovie', (req, res) => {
@@ -156,6 +198,7 @@ app.get('/moviePage', (req, res) => {
 
 app.get('/show-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
+  var username = req.session.username;
   console.log(movie_query);
 
   Movie.find({"movieName" : movie_query})
@@ -169,8 +212,37 @@ app.get('/show-movie', (req, res) => {
       movieImageName : result[0].movieImageName,
       rating : result[0].rating,
       runtime : result[0].runtime,
-      category : result[0].category
+      category : result[0].category,
+      username : username
     });
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+});
+
+app.get('/category', (req, res) => {
+  var category_query = decodeURI(req._parsedUrl.query);
+  var movieNameArray = new Array();
+  var movieImageArray = new Array();
+  var releaseYearArray = new Array();
+  var username = req.session.username;
+  console.log(category_query);
+
+  Movie.find({"category" : category_query})
+  .then((result) => {
+    console.log(result);
+    result = shuffleArray(result);
+      result.forEach((movieName) => {
+        movieNameArray.push(movieName.movieName);
+      })
+      result.forEach((movieName) => {
+        movieImageArray.push(movieName.movieImageName);
+      })
+      result.forEach((movieName) => {
+        releaseYearArray.push(movieName.releaseYear);
+      })
+      return res.render("categoryType", {movieNameArray, movieImageArray, releaseYearArray, username});
   })
   .catch((err) => {
     console.log(err);
@@ -189,8 +261,7 @@ app.get('/home', (req, res) => {
 
   console.log(req.session);
   if(!req.session.username) {
-    res.write('<p> Hey you, you\'re not signed in! </p>');
-    return res.end();
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
   var movieNameArray = new Array();
@@ -215,6 +286,11 @@ app.get('/home', (req, res) => {
   .catch((err) => {
      console.log(err);
    })
+});
+
+app.get('/register', (req, res) => {
+  return res.render("registration", {alertShow: ""})
+  //res.sendFile(__dirname + '/RegisterPage.html');
 });
 
 app.post('/register', (req, res) => {
@@ -385,7 +461,7 @@ app.post('/', urlencodedParser, (req, res) => {
                 result.forEach((movieName) => {
                   releaseYearArray.push(movieName.releaseYear);
                 })
-                return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username});
+                return res.redirect('/home');
             })
             .catch((err) => {
                console.log(err);
@@ -414,3 +490,7 @@ app.post('/', urlencodedParser, (req, res) => {
       console.log(err);
     })
 });
+
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

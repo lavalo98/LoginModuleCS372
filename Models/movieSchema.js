@@ -21,7 +21,7 @@ const movieSchema = new mongoose.Schema({
     },
     movieFileName:{
       type: String,
-      required: false // TODO: Make this true when it all works
+      required: true 
     },
     rating: {
         type: String,

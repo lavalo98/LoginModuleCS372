@@ -14,33 +14,33 @@ mixin navBarSend(user)
             }
     body
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-            a.navbar-brand(href='#') Mock Netflix Site CS372
+            a.navbar-brand(href='home') Mock Netflix Site CS372
             button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
                 span.navbar-toggler-icon
             #navbarSupportedContent.collapse.navbar-collapse
                 ul.navbar-nav.mr-auto
                     li.nav-item.active
-                        a.nav-link(href='#')
+                        a.nav-link(href='home')
                             | Home 
-                            span.sr-only (current)
+                            span.sr-only
                     li.nav-item.dropdown
                         a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                             | Category
                         .dropdown-menu(aria-labelledby='navbarDropdown')
-                            a.dropdown-item(href='#') Action
-                            a.dropdown-item(href='#') Adventure
-                            a.dropdown-item(href='#') Animation
-                            a.dropdown-item(href='#') Comedy
-                            a.dropdown-item(href='#') Drama
-                            a.dropdown-item(href='#') Fantasy
-                            a.dropdown-item(href='#') Historical
-                            a.dropdown-item(href='#') Horror
-                            a.dropdown-item(href='#') Mystery
-                            a.dropdown-item(href='#') Romance
-                            a.dropdown-item(href='#') Sci-Fi
-                            a.dropdown-item(href='#') Thriller
-                            a.dropdown-item(href='#') Western
-                form.form-inline.my-2.my-lg-0
+                            a.dropdown-item(href='category?Action') Action
+                            a.dropdown-item(href='category?Adventure') Adventure
+                            a.dropdown-item(href='category?Animation') Animation
+                            a.dropdown-item(href='category?Comedy') Comedy
+                            a.dropdown-item(href='category?Drama') Drama
+                            a.dropdown-item(href='category?Fantasy') Fantasy
+                            a.dropdown-item(href='category?Historical') Historical
+                            a.dropdown-item(href='category?Horror') Horror
+                            a.dropdown-item(href='category?Mystery') Mystery
+                            a.dropdown-item(href='category?Romance') Romance
+                            a.dropdown-item(href='category?Sci-Fi') Sci-Fi
+                            a.dropdown-item(href='category?Thriller') Thriller
+                            a.dropdown-item(href='category?Western') Western
+                form.form-inline.my-2.my-lg-0(action='/search' method='GET' name='loginForm')
                     h3#username.my-2.my-sm-0 User: #{username}
-                    input.form-control.mr-sm-2(type='search' placeholder='Search' aria-label='Search')
+                    input.form-control.mr-sm-2(type='search' name='search' placeholder='Search for movies' aria-label='Search')
                     button.btn.btn-outline-primary.my-2.my-sm-0.customButtonText(type='submit') Search

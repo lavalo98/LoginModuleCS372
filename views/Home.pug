@@ -3,17 +3,21 @@ include navBar.pug
 html
   head
     style.
+        .background{
+            background-color: #d3d3d3;
+        }
+
         .grid {
             width: 90%;
             text-align: center;
+            background-color: #d3d3d3;
             margin: 0 auto;
             margin-top: 30px;
             display: flex;
             font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
             font-weight: 500;
-            justify-content: center;
+            justify-content: space-around;
             flex-wrap: wrap;
-            border: 2px solid black;
             padding: 0 30px;
         }
 
@@ -53,7 +57,7 @@ html
         #movieData{
             color: white;
         }
-  body
+  body.background
     +navBarSend(username)
     .grid
         for movie, i in movieNameArray

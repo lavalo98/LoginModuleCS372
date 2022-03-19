@@ -40,7 +40,7 @@ mixin navBarSend(user)
                             a.dropdown-item(href='category?Sci-Fi') Sci-Fi
                             a.dropdown-item(href='category?Thriller') Thriller
                             a.dropdown-item(href='category?Western') Western
-                form.form-inline.my-2.my-lg-0
+                form.form-inline.my-2.my-lg-0(action='/search' method='GET' name='loginForm')
                     h3#username.my-2.my-sm-0 User: #{username}
                     input.form-control.mr-sm-2(type='search' name='search' placeholder='Search for movies' aria-label='Search')
                     button.btn.btn-outline-primary.my-2.my-sm-0.customButtonText(type='submit') Search

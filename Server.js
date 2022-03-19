@@ -14,6 +14,7 @@ const Login = require('./Models/loginSchema');
 const Movie = require('./Models/movieSchema');
 const { db } = require('./Models/loginSchema');
 const { Console } = require('console');
+const text = require('body-parser/lib/types/text');
 
 // Web Server
 const app = express();
@@ -25,12 +26,6 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-// Currently hard-coded list of movies, will either be in database or filesystem later
-const movieList = ["Black Panther", "Once Upon a Time…in Hollywood", "The Tribe", "Personal Shopper",
-                   "Black Coal, Thin Ice", "Call Me By Your Name", "Amour", "Batman", "Superman",
-                   "Avengers", "Dragon Ball Z", "Dragonball Super", "Dragon Ball", "Dragon Ball GT",
-                   "First Reformed", "Zama", "Transformers"];
 
 //Set pug as view engine, "views" as location for .pug files
 app.set("view engine", "pug");
@@ -106,6 +101,43 @@ app.get('/', (req, res) => {
   return res.render("login", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
 });
+
+app.get('/search', (req, res) =>{
+  var search_query = req.query.search;
+  var movieNameArray = new Array();
+  var movieImageArray = new Array();
+  var releaseYearArray = new Array();
+  var username = req.session.username;
+  console.log("What you searched for: "+ search_query);
+
+  if(search_query){
+    var movieNameArray = new Array();
+    var movieImageArray = new Array();
+    var releaseYearArray = new Array();
+    var username = req.session.username;
+    const regex = new RegExp(escapeRegex(search_query), 'gi');
+
+    Movie.find({"movieName" : regex})
+      .then((result) => {
+        result = shuffleArray(result);
+        result.forEach((movieName) => {
+          movieNameArray.push(movieName.movieName);
+        })
+        result.forEach((movieName) => {
+          movieImageArray.push(movieName.movieImageName);
+        })
+        result.forEach((movieName) => {
+          releaseYearArray.push(movieName.releaseYear);
+        })
+        return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : result.length});
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }else{
+    return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : 0});
+  }
+})
 
 app.get('/play-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
@@ -458,3 +490,7 @@ app.post('/', urlencodedParser, (req, res) => {
       console.log(err);
     })
 });
+
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

@@ -1,0 +1,76 @@
+doctype html
+include navBar.pug
+html
+  head
+    style.
+        .background{
+            background-color: #d3d3d3;
+        }
+
+        .grid {
+            width: 90%;
+            text-align: center;
+            margin: 0 auto;
+            background-color: #d3d3d3;
+            margin-top: 30px;
+            display: flex;
+            font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+            font-weight: 500;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 30px;
+        }
+
+        .grid div {
+            cursor: pointer;
+            border: none;
+            box-shadow: 0px 5px 5px rgb(10, 10, 10, .45);
+            margin: 1em;
+            flex: 0;
+            width: 15%;
+            min-width: 300px;
+            height: 450px;
+            position:relative;
+        }
+
+        .grid div div {
+            width: 100%;
+            position:absolute;
+            margin: 0 auto;
+            bottom: 0;
+            height: fit-content;
+            text-align: center;
+            background-color: rgb(10, 10, 10, .45);
+            visibility: hidden;
+        }
+
+        .grid div:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .grid div:hover > div {
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        #movieData{
+            color: white;
+        }
+
+        .resultsData{
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+  body.background
+    +navBarSend(username)
+    div.resultsData 
+        Serch Results for '#{search_query}': #{amtOfResults} movie(s)
+    .grid
+        for movie, i in movieNameArray
+            a(href= "show-movie?" + movie)
+                div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
+                    div #{movie + " (" + releaseYearArray[i] + ")"}
+  include footer.pug

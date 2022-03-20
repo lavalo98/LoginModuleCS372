@@ -131,7 +131,7 @@ app.get('/search', (req, res) =>{
         result.forEach((movieName) => {
           releaseYearArray.push(movieName.releaseYear);
         })
-        return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : result.length});
+        return res.render("search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : result.length});
     })
     .catch((err) => {
       console.log(err);
@@ -150,7 +150,7 @@ app.post('/likeOrDislike', (req, res) => {
   // Find user to check their likes and dislikes
   Login.find({"username" : username})
   .then((result) => {
-    console.log(result);
+    //console.log(result);
     
     // Cycle through all likes and dislikes and checks if there is already a like or dislike entry in the DB
     result[0].movieOpinion.forEach(function(movieOpinion){
@@ -163,11 +163,11 @@ app.post('/likeOrDislike', (req, res) => {
         }).catch((err) => {
           console.log(err);
         })
-        console.log("Update currently existing item");
+        //console.log("Update currently existing item");
       }
     });
     // If no movie likeStatus in DB create one
-    console.log("Create new entry");
+    //console.log("Create new entry");
     if(!movieExists){
       Login.findOneAndUpdate({'username' : username}, {$push : {"movieOpinion" : {movieName: movieName, likedStatus: likedOrDisliked}}}, {upsert: true}, function(err, doc) {
         if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
@@ -246,7 +246,7 @@ app.get('/show-movie', (req, res) => {
 
   Login.find({"username" : username})
   .then((result) => {
-    console.log(result);
+    //console.log(result);
 
     // Checks all users for their like status' of the current movie to send the movie page
     result[0].movieOpinion.forEach(function(movieOpinion){
@@ -257,7 +257,7 @@ app.get('/show-movie', (req, res) => {
 
     Movie.find({"movieName" : movie_query})
     .then((result2) => {
-    console.log(result2);
+    //console.log(result2);
 
     return res.render("moviePage", {
       movieName : result2[0].movieName,

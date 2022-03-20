@@ -34,6 +34,9 @@ app.set("views", path.join(__dirname, "views"));
 //Sets up use for .css files
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 dbURI = "";
 
 console.log("Attempting to get DB URI from mongodb.uri...");
@@ -99,7 +102,6 @@ function shuffleArray(array) {
 
 app.get('/', (req, res) => {
   return res.render("login", {alertShow: ""});
-  //res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.get('/search', (req, res) =>{
@@ -138,6 +140,45 @@ app.get('/search', (req, res) =>{
     return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : 0});
   }
 })
+
+app.post('/likeOrDislike', (req, res) => {
+  var username = req.session.username;
+  var movieName = req.body.movieName;
+  var likedOrDisliked = req.body.likedOrDisliked;
+  var movieExists = false; // If movie previously has a like or dislike entry in DB
+
+  // Find user to check their likes and dislikes
+  Login.find({"username" : username})
+  .then((result) => {
+    console.log(result);
+    
+    // Cycle through all likes and dislikes and checks if there is already a like or dislike entry in the DB
+    result[0].movieOpinion.forEach(function(movieOpinion){
+      if(movieOpinion.movieName == movieName){
+        movieExists = true;
+        movieOpinion.likedStatus = likedOrDisliked;
+        const userData = new Login(result[0]);
+        userData.save().then((newResult) => {
+      
+        }).catch((err) => {
+          console.log(err);
+        })
+        console.log("Update currently existing item");
+      }
+    });
+    // If no movie likeStatus in DB create one
+    console.log("Create new entry");
+    if(!movieExists){
+      Login.findOneAndUpdate({'username' : username}, {$push : {"movieOpinion" : {movieName: movieName, likedStatus: likedOrDisliked}}}, {upsert: true}, function(err, doc) {
+        if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+      });
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+          
+});
 
 app.get('/play-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
@@ -199,22 +240,41 @@ app.get('/moviePage', (req, res) => {
 app.get('/show-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
   var username = req.session.username;
+  var movieLikeStatus = "neutral";
   console.log(movie_query);
 
-  Movie.find({"movieName" : movie_query})
+
+  Login.find({"username" : username})
   .then((result) => {
     console.log(result);
 
-    return res.render("moviePage", {
-      movieName : result[0].movieName,
-      releaseYear : result[0].releaseYear,
-      description : result[0].description,
-      movieImageName : result[0].movieImageName,
-      rating : result[0].rating,
-      runtime : result[0].runtime,
-      category : result[0].category,
-      username : username
+    // Checks all users for their like status' of the current movie to send the movie page
+    result[0].movieOpinion.forEach(function(movieOpinion){
+      if(movieOpinion.movieName == movie_query){
+        movieLikeStatus = movieOpinion.likedStatus;
+      }
     });
+
+    Movie.find({"movieName" : movie_query})
+    .then((result2) => {
+    console.log(result2);
+
+    return res.render("moviePage", {
+      movieName : result2[0].movieName,
+      releaseYear : result2[0].releaseYear,
+      description : result2[0].description,
+      movieImageName : result2[0].movieImageName,
+      rating : result2[0].rating,
+      runtime : result2[0].runtime,
+      category : result2[0].category,
+      username : username,
+      movieLikeStatus
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
   })
   .catch((err) => {
     console.log(err);

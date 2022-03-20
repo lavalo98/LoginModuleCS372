@@ -6,6 +6,8 @@ html
         
   body.background
     +navBarSend(username)
+    div.resultsData 
+        Serch All movies with the tag "#{category_query}" 
     .grid
         for movie, i in movieNameArray
             a(href= "show-movie?" + movie)

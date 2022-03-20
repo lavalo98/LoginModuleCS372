@@ -52,3 +52,10 @@
 #movieData{
     color: white;
 }
+
+.resultsData{
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: 20px;
+}

@@ -302,7 +302,7 @@ app.get('/category', (req, res) => {
       result.forEach((movieName) => {
         releaseYearArray.push(movieName.releaseYear);
       })
-      return res.render("categoryType", {movieNameArray, movieImageArray, releaseYearArray, username});
+      return res.render("categoryType", {movieNameArray, movieImageArray, releaseYearArray, username, category_query});
   })
   .catch((err) => {
     console.log(err);

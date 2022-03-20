@@ -137,7 +137,7 @@ app.get('/search', (req, res) =>{
       console.log(err);
     })
   }else{
-    return res.render("Search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : 0});
+    return res.render("search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : 0});
   }
 })
 

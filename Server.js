@@ -119,6 +119,7 @@ app.get('/search', (req, res) =>{
     var username = req.session.username;
     const regex = new RegExp(escapeRegex(search_query), 'gi');
 
+    // Checks to see if any movie matches the regex request
     Movie.find({"movieName" : regex})
       .then((result) => {
         result = shuffleArray(result);
@@ -187,28 +188,31 @@ app.post('/reviewMovie', (req, res) => {
   var username = req.session.username;
   var dateTime = new Date();
 
+  // Adds in the user's review into the database
   Movie.findOneAndUpdate({'movieName' : movieName}, {$push : {"movieViewerReview" : {user: username, amtOfStars: starAmount, reviewText: reviewText, dateOfReview: dateTime}}}, {upsert: true}, function(err, doc) {
     if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
   });
 
+  // Goes back once back to the moviePage after sending the post request
   res.redirect('back');
 
-  console.log(starAmount);
-  console.log(reviewText);
-  console.log(movieName);
-  console.log(dateTime);
+  //console.log(starAmount);
+  //console.log(reviewText);
+  //console.log(movieName);
+  //console.log(dateTime);
 });
 
 app.post('/removeReview', (req, res) => {
   var movieName = req.body.movieName;
   var username = req.session.username;
 
-  console.log(movieName + " " + username);
+  //console.log(movieName + " " + username);
 
+  // Finds the users review for the movie and removes it from the database
   Movie.findOneAndUpdate({'movieName' : movieName}, {$pull : {"movieViewerReview": {user : username}}}, function(err, doc) {
     if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
   });
-
+  // Reloads moviePage
   res.redirect('back');
 });
 
@@ -293,6 +297,7 @@ app.get('/show-movie', (req, res) => {
     //console.log(result2);
     //console.log("Before: " + result2[0].movieViewerReview);
 
+    // Iterates through all of the movie reviews and splices out the current users review and adds it to a variable if it exists
     for (let i = 0; i < result2[0].movieViewerReview.length; i++) {
       if(result2[0].movieViewerReview[i].user == username){
         userReview = result2[0].movieViewerReview[i];

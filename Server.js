@@ -199,6 +199,19 @@ app.post('/reviewMovie', (req, res) => {
   console.log(dateTime);
 });
 
+app.post('/removeReview', (req, res) => {
+  var movieName = req.body.movieName;
+  var username = req.session.username;
+
+  console.log(movieName + " " + username);
+
+  Movie.findOneAndUpdate({'movieName' : movieName}, {$pull : {"movieViewerReview": {user : username}}}, function(err, doc) {
+    if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+  });
+
+  res.redirect('back');
+});
+
 app.get('/play-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
 
@@ -278,7 +291,7 @@ app.get('/show-movie', (req, res) => {
     Movie.find({"movieName" : movie_query})
     .then((result2) => {
     //console.log(result2);
-    console.log("Before: " + result2[0].movieViewerReview);
+    //console.log("Before: " + result2[0].movieViewerReview);
 
     for (let i = 0; i < result2[0].movieViewerReview.length; i++) {
       if(result2[0].movieViewerReview[i].user == username){
@@ -287,7 +300,7 @@ app.get('/show-movie', (req, res) => {
       }
     }
 
-    console.log("After: " + result2[0].movieViewerReview);
+    //console.log("After: " + result2[0].movieViewerReview);
 
     return res.render("moviePage", {
       movieName : result2[0].movieName,

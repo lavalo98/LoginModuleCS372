@@ -95,4 +95,58 @@ html
                 br
                 br
                 span.description #{description}
+    .grid
+        .reviewDiv
+            if userReview == null
+                form#loginForm(action='/reviewMovie' method='POST' name='reviewForm')
+                    .starDiv
+                        input#star5(type='radio' name='rate' value='5' required)
+                        label(for='star5' title='5 Stars') 5 stars
+                        input#star4(type='radio' name='rate' value='4' required)
+                        label(for='star4' title='4 Stars') 4 stars
+                        input#star3(type='radio' name='rate' value='3' required)
+                        label(for='star3' title='3 Stars') 3 stars
+                        input#star2(type='radio' name='rate' value='2' required)
+                        label(for='star2' title='2 Stars') 2 stars
+                        input#star1(type='radio' name='rate' value='1' required)
+                        label(for='star1' title='1 Star') 1 star
+                    .reviewTextBox
+                        textarea.reviewTextArea(name='reviewText' rows='10' cols='40' maxlength="285" required)
+                        input.invisible(type="text" value=movieName name='movieName')
+                    .buttonDiv
+                        button.reviewBtn(type='submit' value='submitReviewForm') Submit Review
+            else 
+                .reviewBox
+                    - var values = [5,4,3,2,1];
+                    .reviewStarDiv
+                        for number in values
+                            if number == userReview.amtOfStars
+                                input(type='radio' value= number disabled checked)
+                                label() stars
+                            else 
+                                input(type='radio' value= number disabled)
+                                label() stars       
+                    .reviewTextBox
+                        div.userAndDate
+                            span= userReview.user + "'s Review"  
+                        br                               
+                        div.otherReviewText= userReview.reviewText     
+        for item, i in movieReviewArray
+            .reviewDiv.reviewBox
+                - var values = [5,4,3,2,1];
+                .reviewStarDiv
+                    for number in values
+                        if number == item.amtOfStars
+                            input(type='radio' value= number disabled checked)
+                            label() stars
+                        else 
+                            input(type='radio' value= number disabled)
+                            label() stars       
+                .reviewTextBox
+                    div.userAndDate
+                        span= item.user + "'s Review"  
+                    br                               
+                    div.otherReviewText= item.reviewText     
+            
+
     include footer.pug

@@ -180,6 +180,25 @@ app.post('/likeOrDislike', (req, res) => {
           
 });
 
+app.post('/reviewMovie', (req, res) => {
+  var starAmount = req.body.rate;
+  var reviewText = req.body.reviewText;
+  var movieName = req.body.movieName;
+  var username = req.session.username;
+  var dateTime = new Date();
+
+  Movie.findOneAndUpdate({'movieName' : movieName}, {$push : {"movieViewerReview" : {user: username, amtOfStars: starAmount, reviewText: reviewText, dateOfReview: dateTime}}}, {upsert: true}, function(err, doc) {
+    if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+  });
+
+  res.redirect('back');
+
+  console.log(starAmount);
+  console.log(reviewText);
+  console.log(movieName);
+  console.log(dateTime);
+});
+
 app.get('/play-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
 
@@ -241,6 +260,7 @@ app.get('/show-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
   var username = req.session.username;
   var movieLikeStatus = "neutral";
+  var userReview;
   console.log(movie_query);
 
 
@@ -258,6 +278,16 @@ app.get('/show-movie', (req, res) => {
     Movie.find({"movieName" : movie_query})
     .then((result2) => {
     //console.log(result2);
+    console.log("Before: " + result2[0].movieViewerReview);
+
+    for (let i = 0; i < result2[0].movieViewerReview.length; i++) {
+      if(result2[0].movieViewerReview[i].user == username){
+        userReview = result2[0].movieViewerReview[i];
+        result2[0].movieViewerReview.splice(i, 1);
+      }
+    }
+
+    console.log("After: " + result2[0].movieViewerReview);
 
     return res.render("moviePage", {
       movieName : result2[0].movieName,
@@ -268,7 +298,9 @@ app.get('/show-movie', (req, res) => {
       runtime : result2[0].runtime,
       category : result2[0].category,
       username : username,
-      movieLikeStatus
+      movieLikeStatus,
+      movieReviewArray : result2[0].movieViewerReview,
+      userReview
     });
   })
   .catch((err) => {

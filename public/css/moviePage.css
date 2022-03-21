@@ -230,6 +230,10 @@
     border-bottom: 1px solid rgb(10, 10, 10, .45);
 }
 
+#ratingForm{
+    margin: 0;
+}
+
 .reviewDiv{
     margin-top: 20px;
     box-shadow: 0px 5px 5px rgb(10, 10, 10, .45);

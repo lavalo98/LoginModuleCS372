@@ -128,8 +128,9 @@ html
                                 label() stars       
                     .reviewTextBox
                         div.userAndDate
-                            span= userReview.user + "'s Review"
+                            
                             form#ratingForm(action='/removeReview' method='POST' name='RemoveReviewForm')
+                                span= userReview.user + "'s Review"
                                 input.invisible(type="text" value=movieName name='movieName')
                                 button.removeReviewBtn(type='submit' value='submitRemoveReviewForm') remove   
                         br                               

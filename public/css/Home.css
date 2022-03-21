@@ -26,6 +26,7 @@
     min-width: 300px;
     height: 450px;
     position:relative;
+    transition: all .1s ease-in-out;
 }
 
 .grid div div {
@@ -36,6 +37,7 @@
     height: fit-content;
     text-align: center;
     background-color: rgb(10, 10, 10, .45);
+    transition: all .1s ease-in-out;
     visibility: hidden;
 }
 

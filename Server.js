@@ -152,7 +152,7 @@ app.post('/likeOrDislike', (req, res) => {
   Login.find({"username" : username})
   .then((result) => {
     //console.log(result);
-    
+
     // Cycle through all likes and dislikes and checks if there is already a like or dislike entry in the DB
     result[0].movieOpinion.forEach(function(movieOpinion){
       if(movieOpinion.movieName == movieName){
@@ -160,7 +160,7 @@ app.post('/likeOrDislike', (req, res) => {
         movieOpinion.likedStatus = likedOrDisliked;
         const userData = new Login(result[0]);
         userData.save().then((newResult) => {
-      
+
         }).catch((err) => {
           console.log(err);
         })
@@ -178,7 +178,7 @@ app.post('/likeOrDislike', (req, res) => {
   .catch((err) => {
     console.log(err);
   })
-          
+
 });
 
 app.post('/reviewMovie', (req, res) => {
@@ -228,17 +228,17 @@ app.get('/play-movie', (req, res) => {
     if (!range) {
       range = 'bytes=0-';
     }
-    
-    // get video stats 
+
+    // get video stats
     const videoPath = "public/videos/" + result[0].movieFileName;
     const videoSize = fs.statSync(videoPath).size;
-    
+
     // Parse Range
     // Example: "bytes=32324-"
     const CHUNK_SIZE = 10 ** 6; // 1MB
     const start = Number(range.replace(/\D/g, ""));
     const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-    
+
     // Create headers
     const contentLength = end - start + 1;
     const headers = {
@@ -247,20 +247,20 @@ app.get('/play-movie', (req, res) => {
       "Content-Length": contentLength,
       "Content-Type": "video/mp4",
     };
-    
+
     // HTTP Status 206 for Partial Content
     res.writeHead(206, headers);
-    
+
     // create video read stream for this particular chunk
     const videoStream = fs.createReadStream(videoPath, { start, end });
-    
+
     // Stream the video chunk to the client
     videoStream.pipe(res);
 
   })
   .catch((err) => {
     console.log(err);
-  })  
+  })
 });
 
 app.get('/addmovie', (req, res) => {
@@ -463,6 +463,9 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   var confirmPasswordInput = req.body.passwordConfirm;
+
+  var roleInput = req.body.role;
+  console.log("Selected role: " + roleInput);
 
   Login.find({"username" : usernameInput})
   .then((result) => {

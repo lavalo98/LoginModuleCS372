@@ -62,6 +62,13 @@ head
     br
 
     .textBoxHeaderDiv
+    select(name='role')
+      option(value=0 selected=true) Viewer
+      option(value=1) Content Editor
+      option(value=2) Marketing Manager
+    br
+
+    .textBoxHeaderDiv
       input(type='checkbox' onclick='togglePassword(),toggleConfirmPassword()')
       | Show Password
     br

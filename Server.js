@@ -216,6 +216,19 @@ app.post('/removeReview', (req, res) => {
   res.redirect('back');
 });
 
+app.get('/playingMovie', (req, res) => {
+  var movieName = decodeURI(req._parsedUrl.query);
+
+  Movie.find({"movieName" : movieName})
+  .then((result) => {
+    return res.render("videoView", {movieName, movieImage : result[0].movieImageName});    
+  })
+  .catch((err) => {
+    console.log(err);
+  })  
+
+});
+
 app.get('/play-movie', (req, res) => {
   var movie_query = decodeURI(req._parsedUrl.query);
 
@@ -226,7 +239,7 @@ app.get('/play-movie', (req, res) => {
     // Ensure there is a range given for the video
     range = req.headers.range;
     if (!range) {
-      range = 'bytes=0-';
+      res.status(400).send("Requires Range header");
     }
     
     // get video stats 

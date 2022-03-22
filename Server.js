@@ -105,6 +105,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/search', (req, res) =>{
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var search_query = req.query.search;
   var movieNameArray = new Array();
   var movieImageArray = new Array();
@@ -143,6 +148,11 @@ app.get('/search', (req, res) =>{
 })
 
 app.post('/likeOrDislike', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var username = req.session.username;
   var movieName = req.body.movieName;
   var likedOrDisliked = req.body.likedOrDisliked;
@@ -152,7 +162,7 @@ app.post('/likeOrDislike', (req, res) => {
   Login.find({"username" : username})
   .then((result) => {
     //console.log(result);
-    
+
     // Cycle through all likes and dislikes and checks if there is already a like or dislike entry in the DB
     result[0].movieOpinion.forEach(function(movieOpinion){
       if(movieOpinion.movieName == movieName){
@@ -160,7 +170,7 @@ app.post('/likeOrDislike', (req, res) => {
         movieOpinion.likedStatus = likedOrDisliked;
         const userData = new Login(result[0]);
         userData.save().then((newResult) => {
-      
+
         }).catch((err) => {
           console.log(err);
         })
@@ -178,10 +188,15 @@ app.post('/likeOrDislike', (req, res) => {
   .catch((err) => {
     console.log(err);
   })
-          
+
 });
 
 app.post('/reviewMovie', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var starAmount = req.body.rate;
   var reviewText = req.body.reviewText;
   var movieName = req.body.movieName;
@@ -203,6 +218,11 @@ app.post('/reviewMovie', (req, res) => {
 });
 
 app.post('/removeReview', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var movieName = req.body.movieName;
   var username = req.session.username;
 
@@ -230,6 +250,11 @@ app.get('/playingMovie', (req, res) => {
 });
 
 app.get('/play-movie', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var movie_query = decodeURI(req._parsedUrl.query);
 
   Movie.find({"movieName" : movie_query})
@@ -241,17 +266,17 @@ app.get('/play-movie', (req, res) => {
     if (!range) {
       res.status(400).send("Requires Range header");
     }
-    
-    // get video stats 
+
+    // get video stats
     const videoPath = "public/videos/" + result[0].movieFileName;
     const videoSize = fs.statSync(videoPath).size;
-    
+
     // Parse Range
     // Example: "bytes=32324-"
     const CHUNK_SIZE = 10 ** 6; // 1MB
     const start = Number(range.replace(/\D/g, ""));
     const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-    
+
     // Create headers
     const contentLength = end - start + 1;
     const headers = {
@@ -260,33 +285,50 @@ app.get('/play-movie', (req, res) => {
       "Content-Length": contentLength,
       "Content-Type": "video/mp4",
     };
-    
+
     // HTTP Status 206 for Partial Content
     res.writeHead(206, headers);
-    
+
     // create video read stream for this particular chunk
     const videoStream = fs.createReadStream(videoPath, { start, end });
-    
+
     // Stream the video chunk to the client
     videoStream.pipe(res);
 
   })
   .catch((err) => {
     console.log(err);
-  })  
+  })
 });
 
 app.get('/addmovie', (req, res) => {
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  if(!req.session.role == 1) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not a content editor!"});
+  }
+
   return res.render("AddMovies", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.get('/moviePage', (req, res) => {
-    return res.render("moviePage");
-    //res.sendFile(__dirname + '/LoginPage.html');
-  });
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  return res.render("moviePage");
+  //res.sendFile(__dirname + '/LoginPage.html');
+});
 
 app.get('/show-movie', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var movie_query = decodeURI(req._parsedUrl.query);
   var username = req.session.username;
   var movieLikeStatus = "neutral";
@@ -345,6 +387,11 @@ app.get('/show-movie', (req, res) => {
 });
 
 app.get('/category', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var category_query = decodeURI(req._parsedUrl.query);
   var movieNameArray = new Array();
   var movieImageArray = new Array();
@@ -422,6 +469,15 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/movie-addition', urlencodedParser, (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  if(req.session.role != 1) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not a content editor!"});
+  }
+
   var movieName = req.body.movieName;
   var releaseYear = req.body.releaseYear;
   var description = req.body.description;
@@ -477,6 +533,9 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
   var passwordInput = req.body.password;
   var confirmPasswordInput = req.body.passwordConfirm;
 
+  var roleInput = req.body.role;
+  console.log("Selected role: " + roleInput);
+
   Login.find({"username" : usernameInput})
   .then((result) => {
     //Various tests for account standards when registering
@@ -504,7 +563,8 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
        const login = new Login({
          email: emailInput,
          username: usernameInput,
-         password: hash
+         password: hash,
+         role: roleInput
        });
 
        login.save()
@@ -563,8 +623,10 @@ app.post('/', urlencodedParser, (req, res) => {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
             });
 
-            // Set username in cookie
+            // Set some user data in cookie (for easier access)
             req.session.username = user.username;
+            req.session.email = user.email;
+            req.session.role = user.role;
 
             // Copy Paste from above, for now...
 

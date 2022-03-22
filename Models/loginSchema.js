@@ -15,6 +15,16 @@ const loginSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+      type: Number,
+      default: 0
+      /*
+       * 0 : viewer
+       * 1 : content editor
+       * 2 : marketing manager
+       * 3+ : possible admin role
+      */
+    },
     lastFailedLoginTime: { // Time of last failed login attempt
         type: Date,
         default: Date.now
@@ -33,7 +43,7 @@ const loginSchema = new mongoose.Schema({
     },
     movieOpinion: [{
         movieName: String,
-        likedStatus: String, 
+        likedStatus: String,
     }]
 
     //TODO: PROFILES

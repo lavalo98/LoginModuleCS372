@@ -259,7 +259,7 @@ app.get('/play-movie', (req, res) => {
 
   Movie.find({"movieName" : movie_query})
   .then((result) => {
-    console.log(result[0].movieFileName);
+    //console.log(result[0].movieFileName);
 
     // Ensure there is a range given for the video
     range = req.headers.range;

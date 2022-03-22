@@ -77,7 +77,7 @@ html
             div.movieTitleDiv #{movieName}
             div.movieRatingDiv
                 br
-                a(href= "play-movie?" + movieName)
+                a(href= "playingMovie?" + movieName)
                     button.playBtn Play
                 img#thumbsUp.thumbImage.rotate180(src='images/thumb-unfilled.png' width='40px' onclick='fillLike('+'"'+movieName+'"'+')')
                 span#likeText LIKE

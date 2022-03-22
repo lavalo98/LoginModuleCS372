@@ -554,8 +554,9 @@ app.post('/', urlencodedParser, (req, res) => {
               if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
             });
 
-            // Set username in cookie
+            // Set some user data in cookie (for easier access)
             req.session.username = user.username;
+            req.session.role = user.role;
 
             // Copy Paste from above, for now...
 

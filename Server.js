@@ -105,6 +105,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/search', (req, res) =>{
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var search_query = req.query.search;
   var movieNameArray = new Array();
   var movieImageArray = new Array();
@@ -143,6 +148,11 @@ app.get('/search', (req, res) =>{
 })
 
 app.post('/likeOrDislike', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var username = req.session.username;
   var movieName = req.body.movieName;
   var likedOrDisliked = req.body.likedOrDisliked;
@@ -182,6 +192,11 @@ app.post('/likeOrDislike', (req, res) => {
 });
 
 app.post('/reviewMovie', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var starAmount = req.body.rate;
   var reviewText = req.body.reviewText;
   var movieName = req.body.movieName;
@@ -203,6 +218,11 @@ app.post('/reviewMovie', (req, res) => {
 });
 
 app.post('/removeReview', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var movieName = req.body.movieName;
   var username = req.session.username;
 
@@ -217,6 +237,11 @@ app.post('/removeReview', (req, res) => {
 });
 
 app.get('/play-movie', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var movie_query = decodeURI(req._parsedUrl.query);
 
   Movie.find({"movieName" : movie_query})
@@ -274,6 +299,11 @@ app.get('/moviePage', (req, res) => {
   });
 
 app.get('/show-movie', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var movie_query = decodeURI(req._parsedUrl.query);
   var username = req.session.username;
   var movieLikeStatus = "neutral";
@@ -332,6 +362,11 @@ app.get('/show-movie', (req, res) => {
 });
 
 app.get('/category', (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
   var category_query = decodeURI(req._parsedUrl.query);
   var movieNameArray = new Array();
   var movieImageArray = new Array();
@@ -409,6 +444,15 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/movie-addition', urlencodedParser, (req, res) => {
+
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  if(req.session.role != 1) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not a content editor!"});
+  }
+
   var movieName = req.body.movieName;
   var releaseYear = req.body.releaseYear;
   var description = req.body.description;
@@ -556,6 +600,7 @@ app.post('/', urlencodedParser, (req, res) => {
 
             // Set some user data in cookie (for easier access)
             req.session.username = user.username;
+            req.session.email = user.email;
             req.session.role = user.role;
 
             // Copy Paste from above, for now...

@@ -1,0 +1,20 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' type='text/css' href='css/videoView.css')
+  script(src="https://kit.fontawesome.com/6ae83f4aa4.js" crossorigin="anonymous")
+  link(href="https://vjs.zencdn.net/7.18.1/video-js.css" rel="stylesheet")
+  script(src="https://vjs.zencdn.net/7.18.1/video.min.js")
+  title= movieName
+body
+    .container
+        h2= movieName
+    video#my-video.video-js.vjs-big-play-centered.vjs-16-9(controls='' preload='auto' poster='images/' + movieImage data-setup='{"autoplay": true}')
+        source(src='/play-movie?' + movieName type='video/mp4')
+        p.vjs-no-js
+        | To view this video please enable JavaScript, and consider upgrading to a
+        | web browser that
+        a(href='https://videojs.com/html5-video-support/' target='_blank') supports HTML5 video
+        
+script(src="/Javascript/videoPlayer.js")

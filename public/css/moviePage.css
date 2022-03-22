@@ -1,0 +1,251 @@
+.background{
+    background-color: #d3d3d3;
+}
+
+.grid {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: #d3d3d3;
+    display: flex;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    font-weight: 500;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding: 0 30px;
+}
+
+.movieImageDiv{
+    width: 15%;
+    min-width: 300px;
+    height: 450px;
+    box-shadow: 0px 5px 5px rgb(10, 10, 10, .45);
+}
+
+.movieTitleDiv{
+    margin-right: 20px;
+    font-size: 45px;
+}
+
+.movieRatingDiv{
+    margin-left: 0px;
+}
+
+.rating, .year, .time {
+    padding: 5px;
+    
+}
+
+
+
+.description{
+    font-size: 20px;
+}
+
+.genre{
+    padding: 5px;
+    color: white;
+    border-radius: 10px;
+    margin-right: 10px;
+    background-color: rgb(52,58,64);
+    text-align: center;
+}
+
+.playBtn{
+    backface-visibility: hidden;
+    background-color: #405cf5;
+    border-radius: 6px;
+    border-width: 0;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-size: 90%;
+    height: 35px;
+    line-height: 1.15;
+    margin: 6px 6px 0;
+    outline: none;
+    overflow: hidden;
+    padding: 0 25px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    transition: all .2s,box-shadow .08s ease-in;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: inline-block;
+    width: 100px;
+}
+
+.reviewBtn{
+    backface-visibility: hidden;
+    background-color: #405cf5;
+    border-radius: 6px;
+    border-width: 0;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-size: 90%;
+    height: 35px;
+    line-height: 1.15;
+    margin: 6px 6px 0;
+    outline: none;
+    overflow: hidden;
+    padding: 0 25px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    transition: all .2s,box-shadow .08s ease-in;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: inline-block;
+    width: fit-content;
+}
+
+.infoDiv{
+    width: 70%;
+}
+
+.rotate180{
+    transform: rotate(180deg);
+}
+
+.thumbImage{
+    margin-right: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+}      
+
+.starDiv{
+    height: 46px;
+    padding: 0 10px;
+    margin-right: 22.5%;
+}
+
+.starDiv:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+
+.starDiv:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color: white;
+}
+
+.starDiv:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.starDiv > input:checked ~ label {
+    color: #393939;    
+}
+
+.starDiv:not(:checked) > label:hover,
+.starDiv:not(:checked) > label:hover ~ label {
+    color: #393939;  
+}
+
+.starDiv > input:checked + label:hover,
+.starDiv > input:checked + label:hover ~ label,
+.starDiv > input:checked ~ label:hover,
+.starDiv > input:checked ~ label:hover ~ label,
+.starDiv > label:hover ~ input:checked ~ label {
+    color: #393939;
+}
+
+.reviewStarDiv{
+    height: 46px;
+    padding: 0 10px;
+    margin-right: 22.5%;
+}
+
+.reviewStarDiv:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+
+.reviewStarDiv:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:30px;
+    color: white;
+}
+
+.reviewStarDiv:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.reviewStarDiv > input:checked ~ label {
+    color: #393939;    
+}
+
+.reviewTextArea{
+    resize: none;
+    border-radius: 10px;
+    width: 310px;
+    height: 220px;
+}
+
+.reviewBox{
+    box-shadow: 0px 5px 5px rgb(10, 10, 10, .45);
+    width: 310px;
+    height: 350px;
+}
+
+.buttonDiv{
+    text-align: center;
+}
+
+.invisible{
+    display: none;
+}
+
+.reviewDiv{
+    border: 1px solid rgb(10, 10, 10, .45);
+}
+
+.otherReviewText{
+    overflow-wrap: break-word;
+}
+
+.reviewTextBox{
+    padding: 5px;
+}
+
+.userAndDate{
+    width: 100%;
+    float: left;
+    border-bottom: 1px solid rgb(10, 10, 10, .45);
+}
+
+#ratingForm{
+    margin: 0;
+}
+
+.reviewDiv{
+    margin-top: 20px;
+    box-shadow: 0px 5px 5px rgb(10, 10, 10, .45);
+}
+
+.removeReviewBtn{
+    float: right;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    text-decoration: underline;
+    color: rgb(177, 0, 0);
+}

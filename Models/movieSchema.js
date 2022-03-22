@@ -39,6 +39,12 @@ const movieSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    movieViewerReview: [{
+        user: String,
+        amtOfStars: Number,
+        reviewText: String,
+        dateOfReview: Date 
+    }]
 }, {timestamps: true});
 
 const Movie = mongoose.model('Movie', movieSchema);

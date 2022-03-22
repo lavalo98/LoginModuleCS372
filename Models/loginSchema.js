@@ -30,7 +30,11 @@ const loginSchema = new mongoose.Schema({
     moviesWatched: { // How many movies the user has watched today
       type: Number,
       default: 0
-    }
+    },
+    movieOpinion: [{
+        movieName: String,
+        likedStatus: String, 
+    }]
 
     //TODO: PROFILES
     //Possibly an array of profile objects?

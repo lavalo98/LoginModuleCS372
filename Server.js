@@ -494,7 +494,8 @@ app.post('/registration-confirmation', urlencodedParser, (req, res) => {
        const login = new Login({
          email: emailInput,
          username: usernameInput,
-         password: hash
+         password: hash,
+         role: roleInput
        });
 
        login.save()

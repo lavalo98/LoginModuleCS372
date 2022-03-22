@@ -289,14 +289,26 @@ app.get('/play-movie', (req, res) => {
 });
 
 app.get('/addmovie', (req, res) => {
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  if(!req.session.role == 1) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not a content editor!"});
+  }
+
   return res.render("AddMovies", {alertShow: ""});
   //res.sendFile(__dirname + '/LoginPage.html');
 });
 
 app.get('/moviePage', (req, res) => {
-    return res.render("moviePage");
-    //res.sendFile(__dirname + '/LoginPage.html');
-  });
+  if(!req.session.username) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  return res.render("moviePage");
+  //res.sendFile(__dirname + '/LoginPage.html');
+});
 
 app.get('/show-movie', (req, res) => {
 

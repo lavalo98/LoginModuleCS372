@@ -101,6 +101,11 @@ function shuffleArray(array) {
 }
 
 app.get('/', (req, res) => {
+
+  if(req.session.loggedIn) {
+    return req.redirect("/home");
+  }
+
   return res.render("login", {alertShow: ""});
 });
 

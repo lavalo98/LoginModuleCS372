@@ -106,7 +106,12 @@ app.get('/', (req, res) => {
     return res.redirect("/home");
   }
 
-  return res.render("login", {alertShow: ""});
+  var tempUsername = "";
+  if(req.session.username) {
+    tempUsername = req.session.username;
+  }
+
+  return res.render("login", {alertShow: "", username: tempUsername});
 });
 
 app.get('/search', (req, res) =>{

@@ -106,7 +106,7 @@ app.get('/', (req, res) => {
 
 app.get('/search', (req, res) =>{
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -149,7 +149,7 @@ app.get('/search', (req, res) =>{
 
 app.post('/likeOrDislike', (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -193,7 +193,7 @@ app.post('/likeOrDislike', (req, res) => {
 
 app.post('/reviewMovie', (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -219,7 +219,7 @@ app.post('/reviewMovie', (req, res) => {
 
 app.post('/removeReview', (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -241,17 +241,17 @@ app.get('/playingMovie', (req, res) => {
 
   Movie.find({"movieName" : movieName})
   .then((result) => {
-    return res.render("videoView", {movieName, movieImage : result[0].movieImageName});    
+    return res.render("videoView", {movieName, movieImage : result[0].movieImageName});
   })
   .catch((err) => {
     console.log(err);
-  })  
+  })
 
 });
 
 app.get('/play-movie', (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -302,7 +302,7 @@ app.get('/play-movie', (req, res) => {
 });
 
 app.get('/addmovie', (req, res) => {
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -315,7 +315,7 @@ app.get('/addmovie', (req, res) => {
 });
 
 app.get('/moviePage', (req, res) => {
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -325,7 +325,7 @@ app.get('/moviePage', (req, res) => {
 
 app.get('/show-movie', (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -388,7 +388,7 @@ app.get('/show-movie', (req, res) => {
 
 app.get('/category', (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -430,7 +430,7 @@ app.get('/home', (req, res) => {
   })
 
   console.log(req.session);
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -470,7 +470,7 @@ app.post('/register', (req, res) => {
 
 app.post('/movie-addition', urlencodedParser, (req, res) => {
 
-  if(!req.session.username) {
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
@@ -624,6 +624,7 @@ app.post('/', urlencodedParser, (req, res) => {
             });
 
             // Set some user data in cookie (for easier access)
+            req.session.loggedIn = true;
             req.session.username = user.username;
             req.session.email = user.email;
             req.session.role = user.role;

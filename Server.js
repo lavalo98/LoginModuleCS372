@@ -267,6 +267,10 @@ app.post('/removeReview', (req, res) => {
 app.get('/playingMovie', (req, res) => {
   var movieName = decodeURI(req._parsedUrl.query);
 
+  Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'viewCount' : 1}}, {upsert: true}, function(err, doc) {
+    if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+  });
+
   Movie.find({"movieName" : movieName})
   .then((result) => {
     return res.render("videoView", {movieName, movieImage : result[0].movieImageName});
@@ -296,7 +300,7 @@ app.get('/play-movie', (req, res) => {
     }
 
     // get video stats
-    const videoPath = "public/videos/Sensory.mp4" //+ result[0].movieFileName;
+    const videoPath = "public/videos/" + result[0].movieFileName;
     const videoSize = fs.statSync(videoPath).size;
 
     // Parse Range

@@ -35,6 +35,11 @@ const movieSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    viewCount: {
+        type: Number,
+        default: 0,
+        required: true
+    },
     likes: {
         type: Number,
         default: 0

@@ -12,6 +12,14 @@ Design documents (diagrams and stories) are located in `Docs/`.
 * `Models`: database schema models
 * `public`: files to be directly served by Node.js (CSS, images, movies)
 * `views`: files for PUG template engine pages
+* `Old`: old files no longer used
+
+* `*.sh`: useful scripts for automated deployment
+
+## Docker
+
+* `Dockerfile`: instructions for Docker to build `loginmodule` image to run the site in a container
+* `docker-compose.yml`: instructions for docker-compose to start `loginmodule` and `MongoDB` services together
 
 ## Building and Running Instructions
 

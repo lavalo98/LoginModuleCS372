@@ -43,8 +43,9 @@ const movieSchema = new mongoose.Schema({
         user: String,
         amtOfStars: Number,
         reviewText: String,
-        dateOfReview: Date 
-    }]
+        dateOfReview: Date,
+        recommend: Boolean
+    }],
 }, {timestamps: true});
 
 const Movie = mongoose.model('Movie', movieSchema);

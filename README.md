@@ -6,6 +6,13 @@ Developed for CS372 Software Construction Projects 1 and 2 by Luis Avalo and Dar
 
 Design documents (diagrams and stories) are located in `Docs/`.
 
+## File Organization
+
+* `Example`: example code and other files from class
+* `Models`: database schema models
+* `public`: files to be directly served by Node.js (CSS, images, movies)
+* `views`: files for PUG template engine pages
+
 ## Building and Running Instructions
 
 Assuming you have docker and docker-compose installed:

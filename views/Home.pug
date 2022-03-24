@@ -2,13 +2,32 @@ doctype html
 include navBar.pug
 html
   head
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous")
     link(rel='stylesheet' type='text/css' href='css/Home.css')
     
   body.background
     +navBarSend(username)
+    if recommendedMoviesArray.length != 0
+      h2.recMovies Recommended Movies
+      .grid
+        for movie, i in recommendedMoviesArray
+          a(href= "show-movie?" + movie.movieName)
+            div#movieData(style= "background: url(images/" + movie.movieImageName + "); background-repeat: no-repeat; background-size: cover;")
+              div
+                for review, i in movie.movieViewerReview
+                  if(review.recommend == true)
+                    span= review.user + " Recommends:" 
+                    br
+                    span= movie.movieName + " (" + movie.releaseYear + ")" 
+                    br
+                    span= "Rated: " + review.amtOfStars + "/5 ★'s"
+                    br
+                    span= review.reviewText
+                    - break;
+    h2.recMovies All Movies
     .grid
-        for movie, i in movieNameArray
-            a(href= "show-movie?" + movie)
-                div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
-                    div #{movie + " (" + releaseYearArray[i] + ")"}
+      for movie, i in movieNameArray
+          a(href= "show-movie?" + movie)
+              div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
+                  div #{movie + " (" + releaseYearArray[i] + ")"}
   include footer.pug

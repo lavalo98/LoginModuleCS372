@@ -16,6 +16,121 @@
     padding: 0 30px;
 }
 
+.grid-recommended {
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid blue;
+    padding: 0 30px;
+}
+
+.child1 {
+    width: 50%;
+    height: 300px;
+    background-color: green;
+    text-align: right;
+    color: white;
+}
+  
+.child2 {
+    width: 70%;
+    background-color: purple;
+    color: green;
+    height: 300px;
+    width: 70%;
+    min-width: 500px;
+}
+
+.container {  
+    display: grid;
+    grid-template-columns: .25fr .25fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+    "Movie-Photo Movie-Info ."
+    "Movie-Photo Review ."
+    ". . .";
+    border: 2px solid purple;
+  }
+  
+.Movie-Photo { 
+    border: 2px solid green;
+    grid-area: Movie-Photo; 
+    width: 15%;
+    min-width: 300px;
+    height: 450px;
+}
+  
+.Movie-Info {
+    border: 2px solid yellow;
+    grid-area: Movie-Info;
+}
+  
+.Review { 
+    border: 2px solid pink;
+    grid-area: Review; 
+}
+  
+
+.blue-column {
+    background-color: blue;
+    height: 100px;
+}
+
+.green-column {
+    background-color: green;
+    height: 100px;
+}
+
+.carousel-inner-box{
+    width: 80%;
+}
+
+.carousel-outer-box{
+    width: 80%;
+}
+
+.carousel-image{
+    float: left;
+    width: 15%;
+    min-width: 375px;
+    height: 562.5px;
+}
+
+.movieInfo{
+    text-align: center;
+    display: inline-block;
+    width: fit-content;
+    border: 2px solid purple;
+}
+
+.movieImg{
+    position: relative;
+    display: inline-block;
+    border: 2px solid rgb(207, 15, 15);
+    margin: 0;
+}
+
+.genre{
+    padding: 5px;
+    color: white;
+    border-radius: 10px;
+    margin-right: 10px;
+    background-color: rgb(52,58,64);
+}
+
+.rating, .year, .time {
+    padding: 5px;
+}
+
+.movieName{
+    font-size: 30px;
+    font-weight: 600;
+}
+
 .grid div {
     cursor: pointer;
     border: none;
@@ -30,6 +145,18 @@
 }
 
 .grid div div {
+    width: 100%;
+    position:absolute;
+    margin: 0 auto;
+    bottom: 0;
+    height: fit-content;
+    text-align: center;
+    background-color: rgb(10, 10, 10, .85);
+    transition: all .1s ease-in-out;
+    visibility: hidden;
+}
+
+.reviewInfo {
     width: 100%;
     position:absolute;
     margin: 0 auto;
@@ -53,4 +180,92 @@
 
 #movieData{
     color: white;
+}
+
+.playBtn{
+    backface-visibility: hidden;
+    background-color: #405cf5;
+    border-radius: 6px;
+    border-width: 0;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-size: 90%;
+    height: 35px;
+    line-height: 1.15;
+    margin: 0 6px;
+    outline: none;
+    overflow: hidden;
+    padding: 0 25px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    transition: all .2s,box-shadow .08s ease-in;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100px;
+}
+
+.recMovies{
+    padding-top: 30px;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    border-bottom: 2px solid #343a40;
+}
+
+.reviewStarDiv{
+    height: 50px;
+    margin-right: 28%;
+}
+
+.reviewStarDiv:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+
+.reviewStarDiv:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:30px;
+    color: white;
+}
+
+.reviewStarDiv:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.reviewStarDiv > input:checked ~ label {
+    color: #393939;    
+}
+
+.reviewTextArea{
+    text-align: center;
+    resize: none;
+    border-radius: 10px;
+    width: 310px;
+    height: 220px;
+}
+
+.reviewBox{
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    text-align: center;
+    width: 360px;
+    height: fit-content;
+}
+
+.userAndDate{
+    width: 100%;
+    float: left;
+    border-bottom: 1px solid rgb(10, 10, 10, .45);
+}
+
+.otherReviewText{
+    overflow-wrap: break-word;
 }

@@ -220,17 +220,25 @@ app.post('/reviewMovie', (req, res) => {
   var starAmount = req.body.rate;
   var reviewText = req.body.reviewText;
   var movieName = req.body.movieName;
+  var recommends;
   var username = req.session.username;
   var dateTime = new Date();
 
+  if(req.body.recommendBox == 'Recommends'){
+    recommends = true;
+  }else{
+    recommends = false;
+  }
+
   // Adds in the user's review into the database
-  Movie.findOneAndUpdate({'movieName' : movieName}, {$push : {"movieViewerReview" : {user: username, amtOfStars: starAmount, reviewText: reviewText, dateOfReview: dateTime}}}, {upsert: true}, function(err, doc) {
+  Movie.findOneAndUpdate({'movieName' : movieName}, {$push : {"movieViewerReview" : {user: username, amtOfStars: starAmount, reviewText: reviewText, dateOfReview: dateTime, recommend : recommends}}}, {upsert: true}, function(err, doc) {
     if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
   });
 
   // Goes back once back to the moviePage after sending the post request
   res.redirect('back');
 
+  //console.log(recommeds);
   //console.log(starAmount);
   //console.log(reviewText);
   //console.log(movieName);
@@ -288,7 +296,7 @@ app.get('/play-movie', (req, res) => {
     }
 
     // get video stats
-    const videoPath = "public/videos/" + result[0].movieFileName;
+    const videoPath = "public/videos/Sensory.mp4" //+ result[0].movieFileName;
     const videoSize = fs.statSync(videoPath).size;
 
     // Parse Range
@@ -349,6 +357,7 @@ app.get('/show-movie', (req, res) => {
     return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
   }
 
+  var userRole = req.session.role;
   var movie_query = decodeURI(req._parsedUrl.query);
   var username = req.session.username;
   var movieLikeStatus = "neutral";
@@ -393,7 +402,8 @@ app.get('/show-movie', (req, res) => {
       username : username,
       movieLikeStatus,
       movieReviewArray : result2[0].movieViewerReview,
-      userReview
+      userReview,
+      userRole
     });
   })
   .catch((err) => {
@@ -457,21 +467,34 @@ app.get('/home', (req, res) => {
   var movieNameArray = new Array();
   var movieImageArray = new Array();
   var releaseYearArray = new Array();
+  var recommendedMoviesArray = new Array();
   var username = req.session.username;
 
   Movie.find({})
     .then((result) => {
       result = shuffleArray(result);
       result.forEach((movieName) => {
+        movieName.movieViewerReview.every((review) => {
+          if(review.recommend == true){
+            recommendedMoviesArray.push(movieName);
+            return false;
+          }
+          return true;
+        })
         movieNameArray.push(movieName.movieName);
-      })
-      result.forEach((movieName) => {
         movieImageArray.push(movieName.movieImageName);
-      })
-      result.forEach((movieName) => {
         releaseYearArray.push(movieName.releaseYear);
       })
-      return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username});
+
+      recommendedMoviesArray.forEach((movie) => {
+        movie.movieViewerReview = shuffleArray(movie.movieViewerReview);
+      })
+
+      if(recommendedMoviesArray.length >= 5){
+        recommendedMoviesArray.splice(4);
+      }
+      console.log(recommendedMoviesArray);
+      return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username, recommendedMoviesArray});
   })
   .catch((err) => {
      console.log(err);

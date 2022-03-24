@@ -2,6 +2,10 @@
 
 Developed for CS372 Software Construction Projects 1 and 2 by Luis Avalo and Darian Marvel
 
+## Documents
+
+Design documents (diagrams and stories) are located in `Docs/`.
+
 ## Building and Running Instructions
 
 Assuming you have docker and docker-compose installed:

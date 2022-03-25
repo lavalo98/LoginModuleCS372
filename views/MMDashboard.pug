@@ -1,0 +1,20 @@
+include navBar.pug
+html
+    head
+        link(rel='stylesheet' type='text/css' href='css/MMDashboard.css')
+
+
+    body.background
+        +navBarSend(username)
+        .grid
+            for movie, i in movieList
+                div
+                    span.movieImgSpan(style="padding: 5px; display:inline-block;")
+                        img.movieImg(src="images/" + movie.movieImageName)
+                    span.movieTitle= movie.movieName + " " 
+                    br
+                    span= movie.viewCount + " Views" 
+                    br
+                    span= movie.likes + " Likes "
+                    br
+                    span= movie.dislikes + " Dislikes"

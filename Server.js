@@ -254,8 +254,8 @@ app.get('/MMDashboard', (req, res) => {
 
   Movie.find({})
   .then((movieList) => {
-    
-    
+
+
     return res.render("MMDashboard", {username, userRole, movieList});
   })
   .catch((err) => {
@@ -317,6 +317,31 @@ app.post('/removeReview', (req, res) => {
 });
 
 app.get('/playingMovie', (req, res) => {
+
+  // Lock user out if they've already seen 3 movies today
+  var dateTime = new Date();
+  var dateTimePlus24 = new Date(new Date().getTime()+(1000*60*60*24)); // 24 Hours past current time
+
+  if(!req.session.movieSeenCount) {
+    req.session.movieSeenCount = 0;
+  }
+
+  if(!req.session.moviePeriodEnd) {
+    req.session.moviePeriodEnd = dateTimePlus24;
+  }
+  else if(dateTime > req.session.moviePeriodEnd) {
+    req.session.moviePeriodEnd = dateTimePlus24;
+    req.session.movieSeenCount = 0;
+  }
+
+  if(movieSeenCount < 3) {
+    req.session.movieSeenCount++;
+  }
+  else if(movieSeenCount >= 3) {
+    //deny access
+    return res.redirect("/home");
+  }
+
   var movieName = decodeURI(req._parsedUrl.query);
 
   Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'viewCount' : 1}}, {upsert: true}, function(err, doc) {

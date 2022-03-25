@@ -6,6 +6,45 @@ html
 
     body.background
         +navBarSend(username)
+        h2.recMovies Top Stats
+        .grid
+            div
+                span.movieImgSpan(style="padding: 5px; display:inline-block;")
+                    img.movieImg(src="images/" + movieMostViewed.movieImageName)
+                span.movieTitle= movieMostViewed.movieName + " " 
+                br
+                span.statTitle= "Most Viewed Movie"
+                br
+                span= movieMostViewed.viewCount + " Views" 
+                br
+                span= movieMostViewed.likes + " Likes "
+                br
+                span= movieMostViewed.dislikes + " Dislikes"
+            div
+                span.movieImgSpan(style="padding: 5px; display:inline-block;")
+                    img.movieImg(src="images/" + movieMostLiked.movieImageName)
+                span.movieTitle= movieMostLiked.movieName + " " 
+                br
+                span.statTitle= "Most Liked Movie"
+                br
+                span= movieMostLiked.viewCount + " Views" 
+                br
+                span= movieMostLiked.likes + " Likes "
+                br
+                span= movieMostLiked.dislikes + " Dislikes"
+            div
+                span.movieImgSpan(style="padding: 5px; display:inline-block;")
+                    img.movieImg(src="images/" + movieMostDisliked.movieImageName)
+                span.movieTitle= movieMostDisliked.movieName + " " 
+                br
+                span.statTitle= "Most Disliked Movie"
+                br
+                span= movieMostDisliked.viewCount + " Views" 
+                br
+                span= movieMostDisliked.likes + " Likes "
+                br
+                span= movieMostDisliked.dislikes + " Dislikes"
+        h2.recMovies Movie Dashboard
         .grid
             for movie, i in movieList
                 div

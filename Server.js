@@ -336,7 +336,7 @@ app.get('/playingMovie', (req, res) => {
   }
 
   // Increment if user is below the limit, otherwise kick the user back to home
-  if(movieSeenCount < 3) {
+  if(req.session.movieSeenCount < 3) {
     req.session.movieSeenCount++;
   }
   else {

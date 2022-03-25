@@ -37,10 +37,6 @@ const loginSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    moviesWatched: { // How many movies the user has watched today
-      type: Number,
-      default: 0
-    },
     movieOpinion: [{
         movieName: String,
         likedStatus: String,

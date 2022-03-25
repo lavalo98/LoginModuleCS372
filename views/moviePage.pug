@@ -7,12 +7,12 @@ html
 
         likeStatus="#{movieLikeStatus}";
 
-        function sendData(sendMovie, likeOrDislike){
+        function sendData(sendMovie, likeOrDislike, toDoLike){
             var xhttp = new XMLHttpRequest();
 
             xhttp.open("POST", "likeOrDislike", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('movieName=' + sendMovie + '&likedOrDisliked=' + likeOrDislike);
+            xhttp.send('movieName=' + sendMovie + '&likedOrDisliked=' + likeOrDislike + '&toDoLike=' + toDoLike);
         }
 
         function fillLike(sendMovie){
@@ -22,14 +22,14 @@ html
 
             if(thumbsDown.getAttribute('src') == 'images/thumb-unfilled.png' && thumbsUp.getAttribute('src') == 'images/thumb-unfilled.png'){
                 thumbsUp.src = 'images/thumb-filled.png';
-                sendData(sendMovie, "liked")
+                sendData(sendMovie, "liked", "addLike")
             }else if(thumbsUp.getAttribute('src') == 'images/thumb-filled.png'){
                 thumbsUp.src = 'images/thumb-unfilled.png';
-                sendData(sendMovie, "neutral")
+                sendData(sendMovie, "neutral", "subLike")
             }else if(thumbsDown.getAttribute('src') == 'images/thumb-filled.png' && thumbsUp.getAttribute('src') == 'images/thumb-unfilled.png'){
                 thumbsUp.src = 'images/thumb-filled.png';
                 thumbsDown.src = 'images/thumb-unfilled.png';
-                sendData(sendMovie, "liked")
+                sendData(sendMovie, "liked", "subDislikeAddLike")
             }
         }
 
@@ -39,14 +39,14 @@ html
 
             if(thumbsUp.getAttribute('src') == 'images/thumb-unfilled.png' && thumbsDown.getAttribute('src') == 'images/thumb-unfilled.png'){
                 thumbsDown.src = 'images/thumb-filled.png';
-                sendData(sendMovie, "disliked")
+                sendData(sendMovie, "disliked", "addDislike")
             }else if(thumbsDown.getAttribute('src') == 'images/thumb-filled.png'){
                 thumbsDown.src = 'images/thumb-unfilled.png';
-                sendData(sendMovie, "neutral")
+                sendData(sendMovie, "neutral", "subDislike")
             }else if(thumbsUp.getAttribute('src') == 'images/thumb-filled.png' && thumbsDown.getAttribute('src') == 'images/thumb-unfilled.png'){
                 thumbsDown.src = 'images/thumb-filled.png';
                 thumbsUp.src = 'images/thumb-unfilled.png';
-                sendData(sendMovie, "disliked")
+                sendData(sendMovie, "disliked", "subLikeAddDislike")
             }        
         }
 

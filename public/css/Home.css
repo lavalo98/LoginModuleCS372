@@ -142,13 +142,14 @@
     height: 450px;
     position:relative;
     transition: all .1s ease-in-out;
+    overflow: hidden;
 }
 
 .grid div div {
     width: 100%;
     position:absolute;
     margin: 0 auto;
-    bottom: 0;
+    bottom: -100%;
     height: fit-content;
     text-align: center;
     background-color: rgb(10, 10, 10, .85);
@@ -176,6 +177,8 @@
 .grid div:hover > div {
     visibility: visible;
     transform: scale(1);
+    bottom: 0;
+    transition: bottom .3s ease;
 }
 
 #movieData{

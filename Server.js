@@ -131,6 +131,7 @@ app.get('/search', (req, res) =>{
   }
 
   var search_query = req.query.search;
+  var userRole = req.session.role;
   var movieNameArray = new Array();
   var movieImageArray = new Array();
   var releaseYearArray = new Array();
@@ -157,7 +158,7 @@ app.get('/search', (req, res) =>{
         result.forEach((movieName) => {
           releaseYearArray.push(movieName.releaseYear);
         })
-        return res.render("search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : result.length});
+        return res.render("search", {movieNameArray, movieImageArray, releaseYearArray, username, search_query, amtOfResults : result.length, userRole});
     })
     .catch((err) => {
       console.log(err);
@@ -176,7 +177,34 @@ app.post('/likeOrDislike', (req, res) => {
   var username = req.session.username;
   var movieName = req.body.movieName;
   var likedOrDisliked = req.body.likedOrDisliked;
+  var toDoLike = req.body.toDoLike;
   var movieExists = false; // If movie previously has a like or dislike entry in DB
+
+  if(toDoLike == 'addLike'){
+    Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'likes' : 1}}, {upsert: true}, function(err, doc) {
+      if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+    });
+  }else if(toDoLike == 'addDislike'){
+    Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'dislikes' : 1}}, {upsert: true}, function(err, doc) {
+      if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+    });
+  }else if(toDoLike == 'subLike'){
+    Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'likes' : -1}}, {upsert: true}, function(err, doc) {
+      if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+    });
+  }else if(toDoLike == 'subDislike'){
+    Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'dislikes' : -1}}, {upsert: true}, function(err, doc) {
+      if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+    });
+  }else if(toDoLike == 'subLikeAddDislike'){
+    Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'dislikes' : 1 , 'likes' : -1}}, {upsert: true}, function(err, doc) {
+      if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+    });
+  }else if(toDoLike == 'addLikeSubDislike'){
+    Movie.findOneAndUpdate({'movieName' : movieName}, {$inc : {'likes' : 1, 'dislikes' : -1}}, {upsert: true}, function(err, doc) {
+      if (err){console.log("Update Failed");}else{console.log('Succesfully saved.');}
+    });
+  }
 
   // Find user to check their likes and dislikes
   Login.find({"username" : username})
@@ -210,6 +238,30 @@ app.post('/likeOrDislike', (req, res) => {
   })
 
 });
+
+app.get('/MMDashboard', (req, res) => {
+
+  var username = req.session.username;
+  var userRole = req.session.role;
+
+  if(!req.session.loggedIn || req.session.loggedIn == false) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not logged in!"});
+  }
+
+  if(req.session.role != 2) {
+    return res.render("login", {alertShow: "show", header: "Access Denied", message: "You are not a marketing manager!"});
+  }
+
+  Movie.find({})
+  .then((movieList) => {
+    
+    
+    return res.render("MMDashboard", {username, userRole, movieList});
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+})
 
 app.post('/reviewMovie', (req, res) => {
 
@@ -430,6 +482,7 @@ app.get('/category', (req, res) => {
   var movieNameArray = new Array();
   var movieImageArray = new Array();
   var releaseYearArray = new Array();
+  var userRole = req.session.role;
   var username = req.session.username;
   console.log(category_query);
 
@@ -446,7 +499,7 @@ app.get('/category', (req, res) => {
       result.forEach((movieName) => {
         releaseYearArray.push(movieName.releaseYear);
       })
-      return res.render("categoryType", {movieNameArray, movieImageArray, releaseYearArray, username, category_query});
+      return res.render("categoryType", {movieNameArray, movieImageArray, releaseYearArray, username, category_query, userRole});
   })
   .catch((err) => {
     console.log(err);
@@ -472,6 +525,7 @@ app.get('/home', (req, res) => {
   var movieImageArray = new Array();
   var releaseYearArray = new Array();
   var recommendedMoviesArray = new Array();
+  var userRole = req.session.role;
   var username = req.session.username;
 
   Movie.find({})
@@ -498,7 +552,7 @@ app.get('/home', (req, res) => {
         recommendedMoviesArray.splice(4);
       }
       console.log(recommendedMoviesArray);
-      return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username, recommendedMoviesArray});
+      return res.render("Home", {movieNameArray, movieImageArray, releaseYearArray, username, recommendedMoviesArray, userRole});
   })
   .catch((err) => {
      console.log(err);

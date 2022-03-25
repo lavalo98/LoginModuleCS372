@@ -39,3 +39,16 @@
     float: left;
 
 }
+
+.recMovies{
+    padding-top: 30px;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    border-bottom: 2px solid #343a40;
+}
+
+.statTitle{
+    color: blue;
+}

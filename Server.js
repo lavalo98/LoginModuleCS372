@@ -318,7 +318,7 @@ app.post('/removeReview', (req, res) => {
 
 app.get('/playingMovie', (req, res) => {
 
-  // Lock user out if they've already seen 3 movies today
+  // Handle recent movie view count lock out
   var dateTime = new Date();
   var dateTimePlus24 = new Date(new Date().getTime()+(1000*60*60*24)); // 24 Hours past current time
 
@@ -326,6 +326,7 @@ app.get('/playingMovie', (req, res) => {
     req.session.movieSeenCount = 0;
   }
 
+  // Handle resets
   if(!req.session.moviePeriodEnd) {
     req.session.moviePeriodEnd = dateTimePlus24;
   }
@@ -334,10 +335,11 @@ app.get('/playingMovie', (req, res) => {
     req.session.movieSeenCount = 0;
   }
 
+  // Increment if user is below the limit, otherwise kick the user back to home
   if(movieSeenCount < 3) {
     req.session.movieSeenCount++;
   }
-  else if(movieSeenCount >= 3) {
+  else {
     //deny access
     return res.redirect("/home");
   }

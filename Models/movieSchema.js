@@ -55,6 +55,10 @@ const movieSchema = new mongoose.Schema({
         dateOfReview: Date,
         recommend: Boolean
     }],
+    movieViewerComment: [{
+        user: String,
+        commentText: String
+    }],
 }, {timestamps: true});
 
 const Movie = mongoose.model('Movie', movieSchema);

@@ -52,3 +52,12 @@
 .statTitle{
     color: blue;
 }
+
+.grid div a {
+    color: #000000;
+}
+
+.grid div a:hover {
+    color:#000000;  
+    cursor:pointer;  
+}

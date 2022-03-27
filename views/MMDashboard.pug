@@ -11,7 +11,8 @@ html
             div
                 span.movieImgSpan(style="padding: 5px; display:inline-block;")
                     img.movieImg(src="images/" + movieMostViewed.movieImageName)
-                span.movieTitle= movieMostViewed.movieName + " " 
+                a(href= "movieStats?" + movieMostViewed.movieName)
+                    span.movieTitle= movieMostViewed.movieName + " " 
                 br
                 span.statTitle= "Most Viewed Movie"
                 br
@@ -23,7 +24,8 @@ html
             div
                 span.movieImgSpan(style="padding: 5px; display:inline-block;")
                     img.movieImg(src="images/" + movieMostLiked.movieImageName)
-                span.movieTitle= movieMostLiked.movieName + " " 
+                a(href= "movieStats?" + movieMostLiked.movieName)
+                    span.movieTitle= movieMostLiked.movieName + " " 
                 br
                 span.statTitle= "Most Liked Movie"
                 br
@@ -35,7 +37,8 @@ html
             div
                 span.movieImgSpan(style="padding: 5px; display:inline-block;")
                     img.movieImg(src="images/" + movieMostDisliked.movieImageName)
-                span.movieTitle= movieMostDisliked.movieName + " " 
+                a(href= "movieStats?" + movieMostDisliked.movieName)
+                    span.movieTitle= movieMostDisliked.movieName + " " 
                 br
                 span.statTitle= "Most Disliked Movie"
                 br
@@ -50,7 +53,8 @@ html
                 div
                     span.movieImgSpan(style="padding: 5px; display:inline-block;")
                         img.movieImg(src="images/" + movie.movieImageName)
-                    span.movieTitle= movie.movieName + " " 
+                    a(href= "movieStats?" + movie.movieName)
+                        span.movieTitle= movie.movieName + " " 
                     br
                     span= movie.viewCount + " Views" 
                     br

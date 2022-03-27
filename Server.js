@@ -112,6 +112,9 @@ app.get('/logout', (req, res) => {
 
 app.get('/', (req, res) => {
 
+  loadUserSession(req, res, handleGetLogin);
+
+  /*
   if( !loadUserSession(req) ) {
     return res.render("login", {alertShow: "show", header: "Internal Error", message: "Could not load or regenerate session!"});
   }
@@ -126,7 +129,21 @@ app.get('/', (req, res) => {
   }
 
   return res.render("login", {alertShow: "", username: tempUsername});
+  */
 });
+
+function handleGetLogin(req, res, loaded) {
+  if(req.session.loggedIn) {
+    return res.redirect("/home");
+  }
+
+  var tempUsername = "";
+  if(req.session.username) {
+    tempUsername = req.session.username;
+  }
+
+  return res.render("login", {alertShow: "", username: tempUsername});
+};
 
 app.get('/search', (req, res) =>{
 
@@ -845,23 +862,29 @@ function escapeRegex(text) {
 };
 
 // req: request from GET or POST method
-function loadUserSession(req) {
-  var loaded = false;
-
+function loadUserSession(req, res, callback) {
   req.session.reload(function(err) {
-    // session updated
-    if(err) console.log("Could not load session of user!");
-    else loaded = true;
+    var loaded = false;
+    if(err) {
+      console.log("Could not load session of user!");
+      generateUserSession(req, res, loaded, callback);
+    }
+    else {
+      loaded = true;
+      callback(req, res, loaded);
+    }
   })
+};
 
-  if(!loaded) {
-    req.session.regenerate(function(err) {
-      // generated new session
-      if(err) console.log("Could not generate a new session for user!");
-      else loaded = true;
-    })
-  }
-
-  return loaded;
-
+function generateUserSession(req, res, loaded, callback) {
+  req.session.regenerate(function(err) {
+    if(err) {
+      console.log("Could not generate a new session for user!");
+      callback(req, res, loaded);
+    }
+    else {
+      loaded = true;
+      callback(req, res, loaded);
+    }
+  })
 };

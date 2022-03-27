@@ -152,7 +152,15 @@ html
                     div.userAndDate
                         span= item.user + "'s Review"  
                     br                               
-                    div.otherReviewText= item.reviewText     
+                    div.otherReviewText= item.reviewText
+    if userRole == 0   
+        .grid
+            div.viewerCommentArea
+                form#ratingForm(action='/viewerCommentMovie' method='POST' name='commentForm')
+                    textarea.viewerComments(name='commentText' rows='10' cols='40' maxlength="380" required)
+                    input.invisible(type="text" value=movieName name='movieName')
+                    br
+                    button.viewerCommentBtn(type='submit' value='submitCommentForm') Submit Comment
         
 
     include footer.pug

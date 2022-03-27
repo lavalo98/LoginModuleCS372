@@ -112,6 +112,10 @@ app.get('/logout', (req, res) => {
 
 app.get('/', (req, res) => {
 
+  if( !loadUserSession(req) ) {
+    return res.render("login", {alertShow: "show", header: "Internal Error", message: "Could not load or regenerate session!"});
+  }
+
   if(req.session.loggedIn) {
     return res.redirect("/home");
   }
@@ -838,4 +842,26 @@ app.post('/', urlencodedParser, (req, res) => {
 
 function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+// req: request from GET or POST method
+function loadUserSession(req) {
+  var loaded = false;
+
+  req.session.reload(function(err) {
+    // session updated
+    if(err) console.log("Could not load session of user!");
+    else loaded = true;
+  })
+
+  if(!loaded) {
+    req.session.regenerate(function(err) {
+      // generated new session
+      if(err) console.log("Could not generate a new session for user!");
+      else loaded = true;
+    })
+  }
+
+  return loaded;
+
 };

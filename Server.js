@@ -133,6 +133,11 @@ app.get('/', (req, res) => {
 });
 
 function handleGetLogin(req, res, loaded) {
+
+  if( !loaded ) {
+    return res.render("login", {alertShow: "show", header: "Internal Error", message: "Could not load or regenerate session!"});
+  }
+
   if(req.session.loggedIn) {
     return res.redirect("/home");
   }
@@ -867,6 +872,7 @@ function loadUserSession(req, res, callback) {
     var loaded = false;
     if(err) {
       console.log("Could not load session of user!");
+      console.log(err);
       generateUserSession(req, res, loaded, callback);
     }
     else {
@@ -880,6 +886,7 @@ function generateUserSession(req, res, loaded, callback) {
   req.session.regenerate(function(err) {
     if(err) {
       console.log("Could not generate a new session for user!");
+      console.log(err);
       callback(req, res, loaded);
     }
     else {

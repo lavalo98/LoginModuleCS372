@@ -857,7 +857,9 @@ function loadUserSession(req, res, callback) {
     if(err) {
       console.log("Could not load session of user!");
       console.log(err);
-      generateUserSession(req, res, loaded, callback);
+      req.session.destroy(function(err) {
+        generateUserSession(req, res, loaded, callback);
+      });
     }
     else {
       loaded = true;
@@ -874,8 +876,10 @@ function generateUserSession(req, res, loaded, callback) {
       callback(req, res, loaded);
     }
     else {
-      loaded = true;
-      callback(req, res, loaded);
+      req.session.save(function(err) {
+        loaded = true;
+        callback(req, res, loaded);
+      });
     }
   })
 };

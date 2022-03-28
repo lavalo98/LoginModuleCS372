@@ -114,22 +114,6 @@ app.get('/', (req, res) => {
 
   loadUserSession(req, res, handleGetLogin);
 
-  /*
-  if( !loadUserSession(req) ) {
-    return res.render("login", {alertShow: "show", header: "Internal Error", message: "Could not load or regenerate session!"});
-  }
-
-  if(req.session.loggedIn) {
-    return res.redirect("/home");
-  }
-
-  var tempUsername = "";
-  if(req.session.username) {
-    tempUsername = req.session.username;
-  }
-
-  return res.render("login", {alertShow: "", username: tempUsername});
-  */
 });
 
 function handleGetLogin(req, res, loaded) {

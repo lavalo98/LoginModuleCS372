@@ -9,8 +9,8 @@ html
     div.resultsData 
         Serch All movies with the tag "#{category_query}" 
     .grid
-        for movie, i in movieNameArray
-            a(href= "show-movie?" + movie)
-                div#movieData(style= "background: url(images/" + movieImageArray[i] + "); background-repeat: no-repeat; background-size: cover;")
-                    div #{movie + " (" + releaseYearArray[i] + ")"}
+        for movie, i in movieList
+            a(href= "show-movie?" + movie.movieName)
+                div#movieData(style= "background: url(images/" + movie.movieImageName + "); background-repeat: no-repeat; background-size: cover;")
+                    div #{movie.movieName + " (" + movie.releaseYear + ")"}
   include footer.pug

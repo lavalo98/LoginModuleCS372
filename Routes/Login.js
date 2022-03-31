@@ -87,22 +87,19 @@ router.get('/', (req, res) => {
 });
 
 function handleGetLogin(req, res, loaded) {
-
   if( !loaded ) {
     return res.render("login", {alertShow: "show", header: "Internal Error", message: "Could not load or regenerate session!"});
   }
-
   if(req.session.loggedIn) {
     return res.redirect("/home");
   }
-
   var tempUsername = "";
   if(req.session.username) {
     tempUsername = req.session.username;
   }
-
   return res.render("login", {alertShow: "", username: tempUsername});
 };
+
 
 // req: request from GET or POST method
 function loadUserSession(req, res, callback) {

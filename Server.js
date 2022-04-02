@@ -1,3 +1,14 @@
+/*
+ * **********************************************************************************************
+ * *                                                                                            *
+ * *  Server.js                                                                                 *
+ * *  Authors: Darian Marvel and Luis Avalo                                                     *
+ * *  For: CS372 Software Construction Projects                                                 *
+ * *                                                                                            *
+ * **********************************************************************************************
+*/
+
+
 // Libraries
 const fs = require('fs');
 const express = require('express');
@@ -61,6 +72,14 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
 }));
+
+//--------------------------------------------------------------------------------------------------------------
+//
+// ROUTES
+//
+// All code below this point routes page requests to the proper javascript file for handling
+//
+//--------------------------------------------------------------------------------------------------------------
 
 // Routing to the login page
 const loginRoute = require('./Routes/Login')

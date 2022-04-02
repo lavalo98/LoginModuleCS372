@@ -1,4 +1,8 @@
-#FROM node:16
+#
+# AUTHOR: Darian Marvel
+# https://github.com/RootCellar
+#
+
 # Start with ubuntu as base
 FROM ubuntu
 

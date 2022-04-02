@@ -61,6 +61,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(80))
   .catch(err => console.log(err));
 
+//Use MongoDB to store cookie data as well
 app.use(session({
   store: MongoStore.create({
     mongoUrl: dbURI,

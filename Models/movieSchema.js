@@ -1,3 +1,9 @@
+/*
+ *
+ * Database Schema setup for movie data
+ *
+*/
+
 const { Int32 } = require('bson');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -21,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     },
     movieFileName:{
       type: String,
-      required: true 
+      required: true
     },
     rating: {
         type: String,

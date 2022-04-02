@@ -1,3 +1,9 @@
+/*
+ *
+ * Database Schema setup for user account
+ *
+*/
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 

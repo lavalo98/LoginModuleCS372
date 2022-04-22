@@ -69,7 +69,7 @@ app.use(session({
     stringify: false,
   }), // Create a MongoDB cookie store at the same dbURI
   secret: 'averyverysecretsecret', // Key for managing cookie data stored in MongoDB
-  cookie: { secure: false, httpOnly: false, expires: new Date(Date.now() + 9999999), sameSite: 'lax' },
+  cookie: { secure: false, httpOnly: false, sameSite: 'lax' },
   resave: true,
   saveUninitialized: true,
 }));
